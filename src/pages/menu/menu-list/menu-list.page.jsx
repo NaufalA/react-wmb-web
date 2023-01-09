@@ -1,8 +1,8 @@
 import {withList} from "../../../components/hoc/index.js";
 import {MENU_ADD_PATH, MENU_EDIT_PATH} from "../../../shared/constants/routes.js";
-import menuMiddleware from "../../../store/middlewares/menu.middleware.js";
 import MenuItem from "./menu-item.component.jsx";
 import {useDispatch} from "react-redux";
+import {menuMiddleware} from "../../../store/middlewares/index.js";
 
 const List = (props) => {
     const { data, navigate, onDelete } = props;

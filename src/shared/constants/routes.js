@@ -11,4 +11,9 @@ export const TABLE_LIST_PATH = "/table";
 export const TABLE_ADD_PATH = "/table/add";
 export const TABLE_EDIT_PATH = "/table/edit";
 
+export const TRANSACTION_PATH = "/transaction";
+export const TRANSACTION_LIST_PATH = "/transaction";
+export const TRANSACTION_ADD_PATH = "/transaction/add";
+export const TRANSACTION_EDIT_PATH = "/transaction/edit";
+
 export const ERROR_FORBIDDEN_PATH = "/forbidden";

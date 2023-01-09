@@ -1,8 +1,8 @@
 import {withList} from "../../../components/hoc/index.js";
 import {TABLE_ADD_PATH, TABLE_EDIT_PATH} from "../../../shared/constants/routes.js";
-import tableMiddleware from "../../../store/middlewares/table.middleware.js";
 import TableItem from "./table-item.component.jsx";
 import {useDispatch} from "react-redux";
+import {tableMiddleware} from "../../../store/middlewares/index.js";
 
 const List = (props) => {
     const { data, navigate, onDelete } = props;

@@ -2,9 +2,18 @@ import {Outlet, Route, Routes} from "react-router-dom";
 import {
     AUTH_LOGIN_PATH,
     AUTH_PATH,
-    ERROR_FORBIDDEN_PATH, MENU_ADD_PATH, MENU_EDIT_PATH,
+    ERROR_FORBIDDEN_PATH,
+    MENU_ADD_PATH,
+    MENU_EDIT_PATH,
     MENU_LIST_PATH,
-    MENU_PATH, TABLE_ADD_PATH, TABLE_EDIT_PATH, TABLE_LIST_PATH, TABLE_PATH
+    MENU_PATH,
+    TABLE_ADD_PATH,
+    TABLE_EDIT_PATH,
+    TABLE_LIST_PATH,
+    TABLE_PATH,
+    TRANSACTION_ADD_PATH, TRANSACTION_EDIT_PATH,
+    TRANSACTION_LIST_PATH,
+    TRANSACTION_PATH
 } from "../shared/constants/routes.js";
 import AuthRoot from "./auth/auth-root.page.jsx";
 import Login from "./auth/login/login.page.jsx";
@@ -17,6 +26,9 @@ import TableRoot from "./table/table-root.page.jsx";
 import TableList from "./table/table-list/table-list.page.jsx";
 import AddTable from "./table/add-table/add-table.page.jsx";
 import EditTable from "./table/edit-table/edit-table.page.jsx";
+import TransactionRoot from "./transaction/transaction-root.jsx";
+import TransactionList from "./transaction/transaction-list/transaction-list.page.jsx";
+import TransactionDetail from "./transaction/transaction-detail/transaction-detail.page.jsx";
 
 export default function Routing() {
     const routes = [
@@ -70,6 +82,28 @@ export default function Routing() {
                     path: `${TABLE_EDIT_PATH}/:id`,
                     element: <EditTable />
                 },
+            ],
+        },
+        {
+            path: TRANSACTION_PATH,
+            element: <TransactionRoot/>,
+            children: [
+                {
+                    path: TRANSACTION_LIST_PATH,
+                    element: <TransactionList/>,
+                },
+                {
+                    path: `${TRANSACTION_PATH}/:id`,
+                    element: <TransactionDetail />,
+                },
+                // {
+                //     path: TRANSACTION_ADD_PATH,
+                //     element: <AddTransaction />,
+                // },
+                // {
+                //     path: `${TRANSACTION_EDIT_PATH}/:id`,
+                //     element: <EditTransaction />
+                // },
             ],
         },
         {
