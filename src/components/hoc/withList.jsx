@@ -9,7 +9,7 @@ export default function withList(ListComponent, options) {
         const {getDataAction, dataSelector, loadingSelector, paginated, label, addPath} =
             options;
 
-        const onNavigate = useNavigate();
+        const navigate = useNavigate();
         const [searchParams, setSearchParams] = useSearchParams();
 
         const isLoading = useSelector(loadingSelector);
@@ -62,7 +62,7 @@ export default function withList(ListComponent, options) {
             <Container className="flex flex-col items-stretch gap-4">
                 <h1>{label} List</h1>
                 <Button
-                    onClick={() => onNavigate(addPath)}
+                    onClick={() => navigate(addPath)}
                     disabled={isLoading}
                     className="self-start"
                 >
@@ -74,7 +74,7 @@ export default function withList(ListComponent, options) {
                     <>
                         <ListComponent
                             data={data}
-                            onNavigate={onNavigate}
+                            navigate={navigate}
                             onDelete={() => setShouldFetch(true)}
                         />
                         {paginated && (

@@ -4,7 +4,7 @@ import {
     AUTH_PATH,
     ERROR_FORBIDDEN_PATH, MENU_ADD_PATH, MENU_EDIT_PATH,
     MENU_LIST_PATH,
-    MENU_PATH
+    MENU_PATH, TABLE_ADD_PATH, TABLE_EDIT_PATH, TABLE_LIST_PATH, TABLE_PATH
 } from "../shared/constants/routes.js";
 import AuthRoot from "./auth/auth-root.page.jsx";
 import Login from "./auth/login/login.page.jsx";
@@ -13,6 +13,10 @@ import {Forbidden} from "./error/index.js";
 import MenuRoot from "./menu/menu-root.page.jsx";
 import MenuList from "./menu/menu-list/menu-list.page.jsx";
 import AddMenu from "./menu/add-menu/add-menu.page.jsx";
+import TableRoot from "./table/table-root.page.jsx";
+import TableList from "./table/table-list/table-list.page.jsx";
+import AddTable from "./table/add-table/add-table.page.jsx";
+import EditTable from "./table/edit-table/edit-table.page.jsx";
 
 export default function Routing() {
     const routes = [
@@ -47,6 +51,24 @@ export default function Routing() {
                 {
                     path: MENU_EDIT_PATH,
                     element: <h1>UNDER CONSTRUCTION</h1>,
+                },
+            ],
+        },
+        {
+            path: TABLE_PATH,
+            element: <TableRoot/>,
+            children: [
+                {
+                    path: TABLE_LIST_PATH,
+                    element: <TableList/>,
+                },
+                {
+                    path: TABLE_ADD_PATH,
+                    element: <AddTable />,
+                },
+                {
+                    path: `${TABLE_EDIT_PATH}/:id`,
+                    element: <EditTable />
                 },
             ],
         },
