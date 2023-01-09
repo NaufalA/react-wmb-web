@@ -1,16 +1,27 @@
 import transactionData from "../shared/fixtures/transaction.json";
+import services from "./index.js";
 
 export default function transactionService() {
     const transactions = [...transactionData];
-    let id = transactions[transactions.length - 1].id;
+    let id = transactions[transactions.length - 1].id + 10;
+    let detailId = transactions[transactions.length - 1].detailList[0].id + 10;
 
     const addTransaction = async (dto) => {
+        console.log(dto);
+        const table = await services.table.getTable(dto.tableId);
         return new Promise((resolve) => {
             setTimeout(() => {
                 const newTransaction = {
-                    id: (++id).toString(),
-                    ...dto
+                    id: ++id,
+                    ...dto,
+                    tableName: table.name,
+                    detailList: dto.detailList.map(d => ({
+                        ...d,
+                        id: ++detailId,
+                        price: d.quantity * d.unitPrice
+                    }))
                 };
+                console.log(newTransaction);
 
                 transactions.push(newTransaction);
                 resolve(newTransaction);

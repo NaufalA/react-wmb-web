@@ -43,6 +43,18 @@ export default function menuService() {
         });
     };
 
+    const listMenuByCategory = async (categoryId) => {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                const data = menus.filter(m => m.menuCategory.id === categoryId);
+
+                resolve({
+                    data,
+                });
+            }, 500);
+        });
+    };
+
     const removeMenu = async (id) => {
         console.log(id);
         return new Promise((resolve) => {
@@ -54,5 +66,5 @@ export default function menuService() {
         });
     }
 
-    return {addMenu, listMenu, removeMenu};
+    return {addMenu, listMenu, listMenuByCategory, removeMenu};
 }

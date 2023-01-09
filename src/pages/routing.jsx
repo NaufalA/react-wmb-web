@@ -29,6 +29,7 @@ import EditTable from "./table/edit-table/edit-table.page.jsx";
 import TransactionRoot from "./transaction/transaction-root.jsx";
 import TransactionList from "./transaction/transaction-list/transaction-list.page.jsx";
 import TransactionDetail from "./transaction/transaction-detail/transaction-detail.page.jsx";
+import AddTransaction from "./transaction/add-transaction/add-transaction.page.jsx";
 
 export default function Routing() {
     const routes = [
@@ -96,10 +97,10 @@ export default function Routing() {
                     path: `${TRANSACTION_PATH}/:id`,
                     element: <TransactionDetail />,
                 },
-                // {
-                //     path: TRANSACTION_ADD_PATH,
-                //     element: <AddTransaction />,
-                // },
+                {
+                    path: TRANSACTION_ADD_PATH,
+                    element: <AddTransaction />,
+                },
                 // {
                 //     path: `${TRANSACTION_EDIT_PATH}/:id`,
                 //     element: <EditTransaction />

@@ -7,7 +7,7 @@ export default function AddTable() {
 
     return (
         <Container>
-            <h1>Add Menu</h1>
+            <h1>Add Table</h1>
             <GenericForm
                 inputs={inputs}
                 error={formError}

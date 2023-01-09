@@ -11,6 +11,8 @@ export default function FormInput(props) {
         required,
         disabled,
         error,
+        min,
+        max,
     } = props;
 
     if (type === "textarea") {
@@ -67,6 +69,8 @@ export default function FormInput(props) {
                 onChange={onChange}
                 required={required}
                 disabled={disabled}
+                min={min}
+                max={max}
             />
             {error && <p className="text-sm">{error}</p> }
         </div>

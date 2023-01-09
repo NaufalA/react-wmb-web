@@ -3,6 +3,7 @@ import {useDispatch} from "react-redux";
 import {useState} from "react";
 import {MENU_LIST_PATH} from "../../../shared/constants/routes.js";
 import menuMiddleware from "../../../store/middlewares/menu.middleware.js";
+import menuCategoryData from "../../../shared/fixtures/menuCategory.json";
 
 export default function useAddMenuPage() {
     const inputs = [
@@ -24,16 +25,7 @@ export default function useAddMenuPage() {
             title: "Menu Category",
             type: "select",
             name: "menuCategory",
-            options: [
-                {
-                    id: 1,
-                    name: "Food"
-                },
-                {
-                    id: 2,
-                    name: "Beverage"
-                },
-            ]
+            options: menuCategoryData
         },
     ];
 

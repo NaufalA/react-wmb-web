@@ -2,7 +2,7 @@ import {FormInput} from "./index.js";
 import {Button} from "../buttons/index.js";
 
 export default function GenericForm(props) {
-    const {inputs, onChange, onSubmit, submitText, onCancel, loading, error} = props;
+    const {inputs, onChange, onSubmit, submitText, onCancel, loading, error, extraContent} = props;
 
     return (
         <form
@@ -28,6 +28,7 @@ export default function GenericForm(props) {
                     error={error ? error[i.name] : undefined}
                 />
             ))}
+            {extraContent}
             <div className="d-flex justify-content-center gap-2">
                 {onCancel && (
                     <Button className="bg-red-600" onClick={onCancel} disabled={loading}>
