@@ -1,12 +1,14 @@
-import { useState } from "react";
+import {useState} from "react";
+import {authMiddleware} from "../../../store/middlewares/index.js";
+import {useDispatch} from "react-redux";
 
 export default function useLoginPage() {
     const inputs = [
         {
-            title: "Username",
-            type: "text",
-            name: "username",
-            placeholder: "Enter Username",
+            title: "Email",
+            type: "email",
+            name: "email",
+            placeholder: "Enter Email",
         },
         {
             title: "Password",
@@ -18,23 +20,23 @@ export default function useLoginPage() {
 
     const [formError, setFormError] = useState({});
 
+    const dispatch = useDispatch();
     const handleSubmit = async (e) => {
-        const { username, password } = e.target;
+        const {email, password} = e.target;
 
-        if (!username.value || !password.value) {
-            const error = { username: {}, password: {} };
-            if (!username.value) {
-                error.username = "Username is required";
+        const error = {username: undefined, password: undefined};
+        if (!email.value || !password.value) {
+            if (!email.value) {
+                error.email = "Email is required";
             }
             if (!password.value) {
                 error.password = "Password is required";
             }
-
-            return setFormError(error);
         }
+        setFormError(error);
 
-        console.log(username, password);
+        dispatch(authMiddleware.login({email: email.value, password: password.value}));
     }
 
-    return { inputs, formError, handleSubmit };
+    return {inputs, formError, handleSubmit};
 }

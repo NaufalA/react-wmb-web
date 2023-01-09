@@ -1,10 +1,15 @@
-import {Outlet} from "react-router-dom";
+import {Navigate, Outlet} from "react-router-dom";
+import {useSelector} from "react-redux";
 
 export default function AuthRoot() {
+    const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
+
+    if (isLoggedIn) {
+        return <Navigate to={"/"} />
+    }
 
     return (
         <>
-            <h1 className="text-xl text-center">Auth</h1>
             <Outlet />
         </>
     )
