@@ -20,6 +20,21 @@ export default function useAddMenuPage() {
             placeholder: "Enter Price",
             required: true,
         },
+        {
+            title: "Menu Category",
+            type: "select",
+            name: "menuCategory",
+            options: [
+                {
+                    id: 1,
+                    name: "Food"
+                },
+                {
+                    id: 2,
+                    name: "Beverage"
+                },
+            ]
+        },
     ];
 
     const [formError, setFormError] = useState({});
@@ -36,6 +51,7 @@ export default function useAddMenuPage() {
             menuMiddleware.addMenu({
                 name: target.name.value,
                 unitPrice: target.unitPrice.value,
+                menuCategory: target.menuCategory.value,
             })
         ).then((res) => {
             window.alert(`Success Create new Menu '${res.name}'`);

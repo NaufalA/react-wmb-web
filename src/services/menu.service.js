@@ -11,6 +11,7 @@ export default function menuService() {
                     id: (++id).toString(),
                     name: dto.name,
                     unitPrice: dto.unitPrice,
+                    menuCategory: dto.menuCategory,
                 };
 
                 menus.push(newMenu);
