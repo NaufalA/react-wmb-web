@@ -1,0 +1,107 @@
+[
+    {
+      "id" : 1,
+      "name" : "Nasi Putih",
+      "unitPrice" : 4000
+    },
+    {
+      "id" : 2,
+      "name" : "Sayur Sop",
+      "unitPrice" : 2000
+    },
+    {
+      "id" : 3,
+      "name" : "Tahu",
+      "unitPrice" : 2000
+    },
+    {
+      "id" : 4,
+      "name" : "Es Teh Tawar",
+      "unitPrice" : 1500
+    },
+    {
+      "id" : 5,
+      "name" : "Sayur Lodeh",
+      "unitPrice" : 2500
+    },
+    {
+      "id" : 6,
+      "name" : "Tempe",
+      "unitPrice" : 2000
+    },
+    {
+      "id" : 7,
+      "name" : "Nasi Goreng",
+      "unitPrice" : 12000
+    },
+    {
+      "id" : 8,
+      "name" : "Telor Ceplok",
+      "unitPrice" : 5000
+    },
+    {
+      "id" : 9,
+      "name" : "Nasi Goreng Spesial",
+      "unitPrice" : 25000
+    },
+    {
+      "id" : 10,
+      "name" : "Sayur Kangkung",
+      "unitPrice" : 1500
+    },
+    {
+      "id" : 11,
+      "name" : "Telor Dadar",
+      "unitPrice" : 5000
+    },
+    {
+      "id" : 12,
+      "name" : "Kopi Kapal Api",
+      "unitPrice" : 4000
+    },
+    {
+      "id" : 13,
+      "name" : "Aneka Gorengan",
+      "unitPrice" : 2000
+    },
+    {
+      "id" : 14,
+      "name" : "Indomie Goreng Telor",
+      "unitPrice" : 10000
+    },
+    {
+      "id" : 15,
+      "name" : "Es Ovaltine",
+      "unitPrice" : 6000
+    },
+    {
+      "id" : 16,
+      "name" : "Telor Balado",
+      "unitPrice" : 4000
+    },
+    {
+      "id" : 17,
+      "name" : "Sayur Buncis",
+      "unitPrice" : 3000
+    },
+    {
+      "id" : 18,
+      "name" : "Es Teh manis",
+      "unitPrice" : 1500
+    },
+    {
+      "id" : 19,
+      "name" : "Tempe Orek",
+      "unitPrice" : 3000
+    },
+    {
+      "id" : 20,
+      "name" : "Sayur Tahu",
+      "unitPrice" : 3000
+    },
+    {
+      "id" : 21,
+      "name" : "Indomie Kari Ayam Telor",
+      "unitPrice" : 10000
+    }
+  ]
