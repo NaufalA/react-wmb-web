@@ -1,10 +1,11 @@
 import {Button} from "../../../components/buttons/index.js";
+import {ListItem} from "../../../components/containers/index.js";
 
 export default function TransactionItem(props) {
     const {data, onDetail} = props;
 
     return (
-        <div className="w-full flex flex-row">
+        <ListItem>
             <div className="grow">
                 <h3 className="text-lg font-bold">{new Date(data.transactionDate).toLocaleString()}</h3>
                 <p>{data.customerName}</p>
@@ -15,6 +16,6 @@ export default function TransactionItem(props) {
                     DETAIL
                 </Button>
             </div>
-        </div>
+        </ListItem>
     );
 }

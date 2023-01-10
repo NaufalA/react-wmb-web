@@ -1,4 +1,3 @@
-import {Container} from "../../../components/containers/index.js";
 import {GenericForm} from "../../../components/forms/index.js";
 import useAddTransactionPage from "./add-transaction.page.js";
 import MenuSelector from "./menu-selector.component.jsx";
@@ -16,26 +15,24 @@ export default function AddTransaction() {
     } = useAddTransactionPage();
 
     return (
-        <Container>
-            <h1>Add Transaction</h1>
-            <div className="flex flex-row gap-8">
-                <div className="w-1/4">
-                    <GenericForm
-                        inputs={inputs}
-                        error={formError}
-                        onSubmit={handleSubmit}
-                        submitText="Order"
-                        onCancel={onCancel}
-                        extraContent={(
-                            <>
-                                <h2>Items</h2>
-                                <DetailList detailList={detailList} onRemoveItem={removeDetailItem}/>
-                            </>
-                        )}
-                    />
-                </div>
-                <MenuSelector onAddItem={addDetailItem}/>
+        <div className="flex flex-row gap-8 h-full">
+            <div className="w-1/4 shadow-lg p-8 h-full">
+                <h1>Add Transaction</h1>
+                <GenericForm
+                    inputs={inputs}
+                    error={formError}
+                    onSubmit={handleSubmit}
+                    submitText="Order"
+                    onCancel={onCancel}
+                    extraContent={(
+                        <>
+                            <h2>Items</h2>
+                            <DetailList detailList={detailList} onRemoveItem={removeDetailItem}/>
+                        </>
+                    )}
+                />
             </div>
-        </Container>
+            <MenuSelector onAddItem={addDetailItem}/>
+        </div>
     );
 }

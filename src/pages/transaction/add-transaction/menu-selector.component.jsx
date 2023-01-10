@@ -45,7 +45,7 @@ export default function MenuSelector(props) {
     }
 
     return (
-        <div className="grow">
+        <div className="grow p-8">
             <div className="grid grid-flow-col justify-items-stretch gap-2 py-3">
                 {menuCategories?.map((cat, i) => (
                     <Button
@@ -65,6 +65,7 @@ export default function MenuSelector(props) {
                         key={`menu-${i}`}
                         onClick={() => setSelectedMenu(menu)}
                         disabled={isLoading}
+                        className="bg-accent"
                     >
                         {menu.name}
                     </Button>

@@ -64,7 +64,7 @@ export default function withList(ListComponent, options) {
                 <Button
                     onClick={() => navigate(addPath)}
                     disabled={isLoading}
-                    className="self-start"
+                    className="self-start bg-success"
                 >
                     Add {label}
                 </Button>

@@ -3,6 +3,7 @@ import {TABLE_ADD_PATH, TABLE_EDIT_PATH} from "../../../shared/constants/routes.
 import TableItem from "./table-item.component.jsx";
 import {useDispatch} from "react-redux";
 import {tableMiddleware} from "../../../store/middlewares/index.js";
+import {ListGroup} from "../../../components/containers/index.js";
 
 const List = (props) => {
     const { data, navigate, onDelete } = props;
@@ -22,7 +23,7 @@ const List = (props) => {
         }
     };
     return (
-        <div className="flex flex-col">
+        <ListGroup>
             {data.map((d, i) => (
                 <TableItem
                     key={`table-item-${i}`}
@@ -31,7 +32,7 @@ const List = (props) => {
                     onRemove={onRemove}
                 />
             ))}
-        </div>
+        </ListGroup>
     );
 };
 

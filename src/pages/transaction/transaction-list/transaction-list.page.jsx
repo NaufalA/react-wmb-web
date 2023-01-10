@@ -2,6 +2,7 @@ import {withList} from "../../../components/hoc/index.js";
 import {TRANSACTION_ADD_PATH, TRANSACTION_PATH} from "../../../shared/constants/routes.js";
 import TransactionItem from "./transaction-item.component.jsx";
 import {transactionMiddleware} from "../../../store/middlewares/index.js";
+import {ListGroup} from "../../../components/containers/index.js";
 
 const List = (props) => {
     const { data, navigate } = props;
@@ -10,7 +11,7 @@ const List = (props) => {
         navigate(`${TRANSACTION_PATH}/${d.id}`);
     };
     return (
-        <div className="flex flex-col">
+        <ListGroup>
             {data.map((d, i) => (
                 <TransactionItem
                     key={`transaction-item-${i}`}
@@ -18,7 +19,7 @@ const List = (props) => {
                     onDetail={onDetail}
                 />
             ))}
-        </div>
+        </ListGroup>
     );
 };
 

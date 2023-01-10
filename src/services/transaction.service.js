@@ -19,7 +19,15 @@ export default function transactionService(http) {
     const getTransaction = async (id) => {
         try {
             const res = await http.get(`${baseURI}/${id}`);
-            return res.data.data;
+            let subTotal = 0;
+            for (const detail of res.data.data.detailList) {
+                subTotal += detail.price;
+            }
+
+            return {
+                ...res.data.data,
+                subTotal
+            };
         } catch (error) {
             console.log(error);
             throw new ErrorResponse(

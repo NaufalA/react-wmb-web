@@ -3,6 +3,7 @@ import {MENU_ADD_PATH, MENU_EDIT_PATH} from "../../../shared/constants/routes.js
 import MenuItem from "./menu-item.component.jsx";
 import {useDispatch} from "react-redux";
 import {menuMiddleware} from "../../../store/middlewares/index.js";
+import {ListGroup} from "../../../components/containers/index.js";
 
 const List = (props) => {
     const { data, navigate, onDelete } = props;
@@ -22,7 +23,7 @@ const List = (props) => {
         }
     };
     return (
-        <div className="flex flex-col">
+        <ListGroup>
             {data.map((d, i) => (
                 <MenuItem
                     key={`menu-item-${i}`}
@@ -31,7 +32,7 @@ const List = (props) => {
                     onRemove={onRemove}
                 />
             ))}
-        </div>
+        </ListGroup>
     );
 };
 

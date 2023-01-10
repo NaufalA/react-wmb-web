@@ -9,9 +9,9 @@ export default function Login() {
     const {inputs, handleSubmit, formError} = useLoginPage();
 
     return (
-        <Container>
-            <div className="flex flex-col items-center gap-4">
-                <h1 className="text-2xl text-center">Login</h1>
+        <Container className="grid place-content-center">
+            <div className=" shadow-md rounded-md p-8 bg-accent flex flex-col items-center gap-4">
+                <h1 className="text-center font-bold">Login</h1>
                 {authError && (
                     <p className="p-2 rounded-sm border-2 border-danger text-danger text-center">
                         {authError.message}
