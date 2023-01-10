@@ -16,10 +16,18 @@ const authReducer = (state = initialState, action) => {
                 loading: false,
                 error: undefined,
             };
+        case AuthActionType.AUTH_VALIDATE:
+            return {
+                ...state,
+                user: action.payload,
+                isLoggedIn: action.payload !== null,
+                loading: false,
+                error: undefined,
+            };
         case AuthActionType.AUTH_LOGOUT:
             return {
                 ...state,
-                user: undefined,
+                user: null,
                 isLoggedIn: false,
                 loading: false,
                 error: undefined,
@@ -32,6 +40,8 @@ const authReducer = (state = initialState, action) => {
         case AuthActionType.SET_ERROR:
             return {
                 ...state,
+                user: null,
+                isLoggedIn: false,
                 error: action.payload.error,
                 loading: false,
             };

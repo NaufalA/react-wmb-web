@@ -13,6 +13,17 @@ const authMiddleware = {
             return {rejected: error};
         }
     },
+    validate: () => async (dispatch) => {
+        try {
+            dispatch(authAction.setLoading(true));
+            const res = await services.auth.validate();
+            dispatch(authAction.validate(res));
+            return {fulfilled: res};
+        } catch (error) {
+            dispatch(authAction.setError(error));
+            return {rejected: error};
+        }
+    },
     logout: () => async (dispatch) => {
         try {
             dispatch(authAction.setLoading(true));
