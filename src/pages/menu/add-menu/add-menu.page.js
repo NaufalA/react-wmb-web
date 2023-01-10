@@ -43,7 +43,7 @@ export default function useAddMenuPage() {
             menuMiddleware.addMenu({
                 name: target.name.value,
                 unitPrice: target.unitPrice.value,
-                menuCategory: target.menuCategory.value,
+                menuCategoryId: target.menuCategory.value,
             })
         ).then((res) => {
             window.alert(`Success Create new Menu '${res.name}'`);

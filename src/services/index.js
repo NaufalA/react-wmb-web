@@ -6,8 +6,8 @@ import httpClient from "../shared/configs/httpClient.js";
 
 const storage = localStorage, services = {
     auth: authService(httpClient, storage),
-    menu: menuService(),
-    table: tableService(),
+    menu: menuService(httpClient),
+    table: tableService(httpClient),
     transaction: transactionService(),
 };
 

@@ -1,46 +1,33 @@
-import menuData from "../shared/fixtures/menu.json";
+import {ErrorResponse} from "../shared/dtos/index.js";
 
-export default function menuService() {
-    const menus = [...menuData];
-    let id = menus[menus.length - 1].id;
+export default function menuService(http) {
+    const baseURI = "menus";
 
     const addMenu = async (dto) => {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                const newMenu = {
-                    id: (++id).toString(),
-                    name: dto.name,
-                    unitPrice: dto.unitPrice,
-                    menuCategory: dto.menuCategory,
-                };
-
-                menus.push(newMenu);
-                resolve(newMenu);
-            }, 1000);
-        });
+        try {
+            const res = await http.post(`${baseURI}`, dto);
+            return res.data.data;
+        } catch (error) {
+            throw new ErrorResponse(
+                error.response.data.code || error.response.status,
+                error.response.data.message || error.message,
+                error.response.data.reason || error.message
+            );
+        }
     };
 
     const listMenu = async (page, size) => {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                const offset = page * size;
-                let data;
-                if (size === 0) {
-                    data = [...menus];
-                } else {
-                    data = menus.slice(offset, offset + size);
-                }
-
-                resolve({
-                    page,
-                    size,
-                    data,
-                    count: data.length,
-                    totalPage: Math.ceil(menus.length / size),
-                    totalCount: menus.length,
-                });
-            }, 1000);
-        });
+        try {
+            const res = await http.get(`${baseURI}?page=${page}&size=${size}`);
+            return res.data.data;
+        } catch (error) {
+            console.log(error);
+            throw new ErrorResponse(
+                error.response.data.code || error.response.status,
+                error.response.data.message || error.message,
+                error.response.data.reason || error.message
+            );
+        }
     };
 
     const listMenuByCategory = async (categoryId) => {
@@ -56,14 +43,16 @@ export default function menuService() {
     };
 
     const removeMenu = async (id) => {
-        console.log(id);
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                const deletedIndex = menus.findIndex(c => c.id === id);
-                console.log(deletedIndex);
-                resolve(menus.splice(deletedIndex, 1)[0].id);
-            }, 1000);
-        });
+        try {
+            const res = await http.delete(`${baseURI}/${id}`);
+            return res.data.data;
+        } catch (error) {
+            throw new ErrorResponse(
+                error.response.data.code || error.response.status,
+                error.response.data.message || error.message,
+                error.response.data.reason || error.message
+            );
+        }
     }
 
     return {addMenu, listMenu, listMenuByCategory, removeMenu};
