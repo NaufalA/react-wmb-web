@@ -67,15 +67,20 @@ export default function useAddTransactionPage() {
 
         const {target} = e;
 
+        console.log(new Date(target.transactionDate.value).toISOString());
+
         dispatch(
             transactionMiddleware.addTransaction({
-                transactionDate: target.transactionDate.value,
+                transactionDate: new Date(target.transactionDate.value).toISOString(),
                 customerName: target.customerName.value,
-                tableId: target.tableId.value,
-                detailList
+                tableId: Number(target.tableId.value),
+                detailList: detailList.map(detail => {
+                    const { quantity, priceId } = detail;
+                    return { quantity, menuPriceId: priceId };
+                })
             })
         ).then((res) => {
-            window.alert(`Success Create new Transaction '${res.name}'`);
+            window.alert(`Success Create new Transaction '${res.id}'`);
             navigate(TRANSACTION_LIST_PATH);
         });
     };

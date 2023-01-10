@@ -1,5 +1,4 @@
 import {Button} from "../../../components/buttons/index.js";
-import menuCategoryData from "../../../shared/fixtures/menuCategory.json";
 import {useEffect, useState} from "react";
 import services from "../../../services/index.js";
 import {FormInput} from "../../../components/forms/index.js";
@@ -9,7 +8,14 @@ export default function MenuSelector(props) {
 
     const [categoryId, setCategoryId] = useState(1);
     const [menuData, setMenuData] = useState(null);
+    const [menuCategories, setMenuCategories] = useState();
     const [isLoading, setLoading] = useState(false);
+
+    useEffect(() => {
+        services.menu.listCategory().then(res => {
+            setMenuCategories(res);
+        });
+    }, []);
 
     useEffect(() => {
         setLoading(true);
@@ -19,7 +25,7 @@ export default function MenuSelector(props) {
         }).finally(() => {
             setLoading(false)
         });
-    }, [menuData, categoryId]);
+    }, [categoryId]);
 
     const [selectedMenu, setSelectedMenu] = useState(undefined);
 
@@ -32,6 +38,7 @@ export default function MenuSelector(props) {
             quantity: quantity.value,
             productId: selectedMenu.id,
             productName: selectedMenu.name,
+            priceId: selectedMenu.priceId,
             unitPrice: selectedMenu.unitPrice,
             price: quantity.value * selectedMenu.unitPrice,
         });
@@ -40,7 +47,7 @@ export default function MenuSelector(props) {
     return (
         <div className="grow">
             <div className="flex justify-around">
-                {menuCategoryData?.map((cat, i) => (
+                {menuCategories?.map((cat, i) => (
                     <Button
                         key={`category-${i}`}
                         onClick={() => setCategoryId(cat.id)}

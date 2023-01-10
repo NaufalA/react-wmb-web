@@ -31,15 +31,17 @@ export default function menuService(http) {
     };
 
     const listMenuByCategory = async (categoryId) => {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                const data = menus.filter(m => m.menuCategory.id === categoryId);
-
-                resolve({
-                    data,
-                });
-            }, 500);
-        });
+        try {
+            const res = await http.get(`${baseURI}?page=${0}&size=${0}&categoryId=${categoryId}`);
+            return res.data.data;
+        } catch (error) {
+            console.log(error);
+            throw new ErrorResponse(
+                error.response.data.code || error.response.status,
+                error.response.data.message || error.message,
+                error.response.data.reason || error.message
+            );
+        }
     };
 
     const removeMenu = async (id) => {
@@ -55,5 +57,19 @@ export default function menuService(http) {
         }
     }
 
-    return {addMenu, listMenu, listMenuByCategory, removeMenu};
+    const listCategory = async () => {
+        try {
+            const res = await http.get(`${baseURI}/categories`);
+            return res.data.data;
+        } catch (error) {
+            console.log(error);
+            throw new ErrorResponse(
+                error.response.data.code || error.response.status,
+                error.response.data.message || error.message,
+                error.response.data.reason || error.message
+            );
+        }
+    }
+
+    return {addMenu, listMenu, listMenuByCategory, removeMenu, listCategory};
 }

@@ -8,7 +8,7 @@ const storage = localStorage, services = {
     auth: authService(httpClient, storage),
     menu: menuService(httpClient),
     table: tableService(httpClient),
-    transaction: transactionService(),
+    transaction: transactionService(httpClient),
 };
 
 export default services;

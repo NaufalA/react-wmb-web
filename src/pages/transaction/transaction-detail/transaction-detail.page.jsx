@@ -15,7 +15,7 @@ export default function TransactionDetail() {
                     <table className="w-full">
                         <thead className="text-left">
                         <tr>
-                            <th>Product Name</th>
+                            <th>Menu Name</th>
                             <th>Unit Price</th>
                             <th>Quantity</th>
                             <th className="text-right">Total Price</th>
@@ -24,7 +24,7 @@ export default function TransactionDetail() {
                         <tbody>
                         {transaction?.detailList?.map((detail, i) => (
                             <tr key={`detail-${i}`}>
-                                <td>{detail.productName}</td>
+                                <td>{detail.menuName}</td>
                                 <td>{detail.unitPrice}</td>
                                 <td>{detail.quantity}</td>
                                 <td className="text-right">{detail.price}</td>
