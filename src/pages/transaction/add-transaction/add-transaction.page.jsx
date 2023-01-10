@@ -19,19 +19,21 @@ export default function AddTransaction() {
         <Container>
             <h1>Add Transaction</h1>
             <div className="flex flex-row gap-8">
-                <GenericForm
-                    inputs={inputs}
-                    error={formError}
-                    onSubmit={handleSubmit}
-                    submitText="Order"
-                    onCancel={onCancel}
-                    extraContent={(
-                        <>
-                            <h2>Items</h2>
-                            <DetailList detailList={detailList} onRemoveItem={removeDetailItem}/>
-                        </>
-                    )}
-                />
+                <div className="w-1/4">
+                    <GenericForm
+                        inputs={inputs}
+                        error={formError}
+                        onSubmit={handleSubmit}
+                        submitText="Order"
+                        onCancel={onCancel}
+                        extraContent={(
+                            <>
+                                <h2>Items</h2>
+                                <DetailList detailList={detailList} onRemoveItem={removeDetailItem}/>
+                            </>
+                        )}
+                    />
+                </div>
                 <MenuSelector onAddItem={addDetailItem}/>
             </div>
         </Container>

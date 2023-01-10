@@ -6,7 +6,7 @@ export default function TransactionItem(props) {
     return (
         <div className="w-full flex flex-row">
             <div className="grow">
-                <h3 className="text-lg font-bold">{data.transactionDate}</h3>
+                <h3 className="text-lg font-bold">{new Date(data.transactionDate).toLocaleString()}</h3>
                 <p>{data.customerName}</p>
                 <p>{data.subTotal}</p>
             </div>

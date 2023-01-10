@@ -10,7 +10,7 @@ export default function GenericForm(props) {
                 e.preventDefault();
                 onSubmit(e);
             }}
-            className="d-flex flex-column gap-4"
+            className="flex flex-col gap-4"
         >
             {inputs?.map((i) => (
                 <FormInput
@@ -29,13 +29,13 @@ export default function GenericForm(props) {
                 />
             ))}
             {extraContent}
-            <div className="d-flex justify-content-center gap-2">
+            <div className="grid grid-flow-col gap-2">
                 {onCancel && (
-                    <Button className="bg-red-600" onClick={onCancel} disabled={loading}>
+                    <Button className="bg-danger" onClick={onCancel} disabled={loading}>
                         Cancel
                     </Button>
                 )}
-                <Button className="bg-green-600" type="submit" disabled={loading}>
+                <Button className="bg-success" type="submit" disabled={loading}>
                     {submitText || "Save"}
                 </Button>
             </div>

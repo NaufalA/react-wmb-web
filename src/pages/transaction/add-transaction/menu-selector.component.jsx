@@ -8,7 +8,7 @@ export default function MenuSelector(props) {
 
     const [categoryId, setCategoryId] = useState(1);
     const [menuData, setMenuData] = useState(null);
-    const [menuCategories, setMenuCategories] = useState();
+    const [menuCategories, setMenuCategories] = useState(null);
     const [isLoading, setLoading] = useState(false);
 
     useEffect(() => {
@@ -46,7 +46,7 @@ export default function MenuSelector(props) {
 
     return (
         <div className="grow">
-            <div className="flex justify-around">
+            <div className="grid grid-flow-col justify-items-stretch gap-2 py-3">
                 {menuCategories?.map((cat, i) => (
                     <Button
                         key={`category-${i}`}
@@ -59,7 +59,7 @@ export default function MenuSelector(props) {
                 }
             </div>
             <hr/>
-            <div className="grid grid-cols-3">
+            <div className="grid grid-flow-col content-center gap-2 p-6">
                 {menuData?.map((menu, i) => (
                     <Button
                         key={`menu-${i}`}
@@ -72,34 +72,38 @@ export default function MenuSelector(props) {
                 }
             </div>
             {selectedMenu && (
-                <form onSubmit={handleAddItem}>
-                    <div className="flex gap-8">
-                        <h2 className="text-lg">{selectedMenu.name}</h2>
-                        <h2 className="text-lg">{selectedMenu.unitPrice}</h2>
-                    </div>
-                    <FormInput
-                        title="Quantity"
-                        type="number"
-                        name="quantity"
-                        required
-                        defaultValue={1}
-                        min={1}
-                        disabled={isLoading}
-                    />
-                    <div className="flex gap-8">
-                        <Button
-                            onClick={() => setSelectedMenu(undefined)}
+                <div className="mx-auto w-fit p-4 bg-accent shadow-md">
+                    <form onSubmit={handleAddItem} className="flex flex-col gap-4">
+                        <div>
+                            <h3 className="font-bold">{selectedMenu.name}</h3>
+                            <h3 className>{selectedMenu.unitPrice}</h3>
+                        </div>
+                        <FormInput
+                            title="Quantity"
+                            type="number"
+                            name="quantity"
+                            required
+                            defaultValue={1}
+                            min={1}
                             disabled={isLoading}
-                        >
-                            Cancel
-                        </Button>
-                        <Button
-                            type="submit"
-                            disabled={isLoading}
-                        >Add
-                        </Button>
-                    </div>
-                </form>
+                        />
+                        <div className="grid grid-flow-col gap-2">
+                            <Button
+                                onClick={() => setSelectedMenu(undefined)}
+                                disabled={isLoading}
+                                className="bg-danger"
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                type="submit"
+                                disabled={isLoading}
+                                className="bg-success"
+                            >Add
+                            </Button>
+                        </div>
+                    </form>
+                </div>
             )}
         </div>
     );

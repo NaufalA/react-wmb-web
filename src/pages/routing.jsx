@@ -11,7 +11,7 @@ import {
     TABLE_EDIT_PATH,
     TABLE_LIST_PATH,
     TABLE_PATH,
-    TRANSACTION_ADD_PATH, TRANSACTION_EDIT_PATH,
+    TRANSACTION_ADD_PATH,
     TRANSACTION_LIST_PATH,
     TRANSACTION_PATH
 } from "../shared/constants/routes.js";
@@ -120,24 +120,26 @@ export default function Routing() {
     ];
 
     return (
-        <Routes>
-            {routes.map((r, i) => (
-                <Route
-                    key={`route-${i}`}
-                    path={r.path}
-                    element={r.element}
-                    index={r.index}
-                >
-                    {r.children?.map((rc, j) => (
-                        <Route
-                            key={`route-${i}-${j}`}
-                            path={rc.path}
-                            element={rc.element}
-                            index={rc.index}
-                        />
-                    ))}
-                </Route>
-            ))}
-        </Routes>
+        <div className="grow">
+            <Routes>
+                {routes.map((r, i) => (
+                    <Route
+                        key={`route-${i}`}
+                        path={r.path}
+                        element={r.element}
+                        index={r.index}
+                    >
+                        {r.children?.map((rc, j) => (
+                            <Route
+                                key={`route-${i}-${j}`}
+                                path={rc.path}
+                                element={rc.element}
+                                index={rc.index}
+                            />
+                        ))}
+                    </Route>
+                ))}
+            </Routes>
+        </div>
     )
 }

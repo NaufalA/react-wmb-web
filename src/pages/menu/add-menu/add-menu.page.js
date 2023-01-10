@@ -1,11 +1,19 @@
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {MENU_LIST_PATH} from "../../../shared/constants/routes.js";
 import menuMiddleware from "../../../store/middlewares/menu.middleware.js";
-import menuCategoryData from "../../../shared/fixtures/menuCategory.json";
+import services from "../../../services/index.js";
 
 export default function useAddMenuPage() {
+    const [menuCategories, setMenuCategories] = useState(null);
+
+    useEffect(() => {
+        services.menu.listCategory().then(res => {
+            setMenuCategories(res);
+        });
+    }, []);
+
     const inputs = [
         {
             title: "Name",
@@ -25,7 +33,7 @@ export default function useAddMenuPage() {
             title: "Menu Category",
             type: "select",
             name: "menuCategory",
-            options: menuCategoryData
+            options: menuCategories
         },
     ];
 

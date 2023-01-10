@@ -14,7 +14,7 @@ export default function PaginationControl(props) {
     } = props;
 
     return (
-        <div className="d-flex gap-2 justify-content-end align-items-center">
+        <div className="flex gap-2 justify-end items-center">
             <span>{`showing ${count} out of ${totalCount} data`}</span>
             <FormInput
                 type="select"
@@ -28,7 +28,7 @@ export default function PaginationControl(props) {
                 <Button
                     onClick={() => onChangePage(page - 1)}
                     disabled={disabled || page === 0}
-                    variant="outline-primary"
+                    className="rounded-l-md rounded-r-none"
                 >
                     PREV
                 </Button>
@@ -37,7 +37,7 @@ export default function PaginationControl(props) {
                         key={`page-${i}`}
                         onClick={() => onChangePage(i)}
                         disabled={disabled}
-                        variant={`${i === page ? "primary" : "outline-primary"}`}
+                        className={`rounded-none ${i === page ? "bg-info" : "border-info"}`}
                     >
                         {i + 1}
                     </Button>
@@ -45,7 +45,7 @@ export default function PaginationControl(props) {
                 <Button
                     onClick={() => onChangePage(page + 1)}
                     disabled={disabled || page === totalPages - 1}
-                    variant="outline-primary"
+                    className="rounded-r-md rounded-l-none"
                 >
                     NEXT
                 </Button>

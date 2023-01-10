@@ -10,9 +10,14 @@ export default function Login() {
 
     return (
         <Container>
-            <div className="d-flex justify-content-center">
-                {authError && <p>{authError.message}</p>}
-                <h1>Login</h1>
+            <div className="flex flex-col items-center gap-4">
+                <h1 className="text-2xl text-center">Login</h1>
+                {authError && (
+                    <p className="p-2 rounded-sm border-2 border-danger text-danger text-center">
+                        {authError.message}
+                    </p>
+                )
+                }
                 <GenericForm
                     inputs={inputs}
                     error={formError}
