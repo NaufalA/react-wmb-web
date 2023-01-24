@@ -16,6 +16,20 @@ export default function menuService(http) {
         }
     };
 
+    const getMenu = async (id) => {
+        try {
+            const res = await http.get(`${baseURI}/${id}`);
+            return res.data.data;
+        } catch (error) {
+            console.log(error);
+            throw new ErrorResponse(
+                error.response.data.code || error.response.status,
+                error.response.data.message || error.message,
+                error.response.data.reason || error.message
+            );
+        }
+    }
+
     const listMenu = async (page, size) => {
         try {
             const res = await http.get(`${baseURI}?page=${page}&size=${size}`);
@@ -71,5 +85,5 @@ export default function menuService(http) {
         }
     }
 
-    return {addMenu, listMenu, listMenuByCategory, removeMenu, listCategory};
+    return {addMenu, getMenu, listMenu, listMenuByCategory, removeMenu, listCategory};
 }

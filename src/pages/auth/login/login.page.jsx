@@ -10,11 +10,11 @@ export default function Login() {
 
     return (
         <Container className="grid place-content-center">
-            <div className=" shadow-md rounded-md p-8 bg-accent flex flex-col items-center gap-4">
+            <div className=" shadow-md rounded-md p-8 bg-accent flex flex-col items-stretch gap-4">
                 <h1 className="text-center font-bold">Login</h1>
                 {authError && (
                     <p className="p-2 rounded-sm border-2 border-danger text-danger text-center">
-                        {authError.message}
+                        {authError.reason}
                     </p>
                 )
                 }

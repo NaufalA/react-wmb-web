@@ -30,6 +30,7 @@ import TransactionRoot from "./transaction/transaction-root.jsx";
 import TransactionList from "./transaction/transaction-list/transaction-list.page.jsx";
 import TransactionDetail from "./transaction/transaction-detail/transaction-detail.page.jsx";
 import AddTransaction from "./transaction/add-transaction/add-transaction.page.jsx";
+import EditMenu from "./menu/edit-menu/edit-menu.page.jsx";
 
 export default function Routing() {
     const routes = [
@@ -59,11 +60,11 @@ export default function Routing() {
                 },
                 {
                     path: MENU_ADD_PATH,
-                    element: <AddMenu />,
+                    element: <AddMenu/>,
                 },
                 {
-                    path: MENU_EDIT_PATH,
-                    element: <h1>UNDER CONSTRUCTION</h1>,
+                    path: `${MENU_EDIT_PATH}/:id`,
+                    element: <EditMenu/>
                 },
             ],
         },
@@ -77,11 +78,11 @@ export default function Routing() {
                 },
                 {
                     path: TABLE_ADD_PATH,
-                    element: <AddTable />,
+                    element: <AddTable/>,
                 },
                 {
                     path: `${TABLE_EDIT_PATH}/:id`,
-                    element: <EditTable />
+                    element: <EditTable/>
                 },
             ],
         },
@@ -95,11 +96,11 @@ export default function Routing() {
                 },
                 {
                     path: `${TRANSACTION_PATH}/:id`,
-                    element: <TransactionDetail />,
+                    element: <TransactionDetail/>,
                 },
                 {
                     path: TRANSACTION_ADD_PATH,
-                    element: <AddTransaction />,
+                    element: <AddTransaction/>,
                 },
                 // {
                 //     path: `${TRANSACTION_EDIT_PATH}/:id`,

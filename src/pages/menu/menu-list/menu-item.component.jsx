@@ -12,9 +12,9 @@ export default function MenuItem(props) {
                 <p>{data.unitPrice}</p>
             </div>
             <div className="flex gap-2">
-                {/*<Button onClick={() => onEdit(data)}>*/}
-                {/*    EDIT*/}
-                {/*</Button>*/}
+                <Button onClick={() => onEdit(data)}>
+                    EDIT
+                </Button>
                 <Button onClick={() => onRemove(data)} className="bg-danger">
                     DELETE
                 </Button>
