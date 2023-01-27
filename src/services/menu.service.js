@@ -58,6 +58,19 @@ export default function menuService(http) {
         }
     };
 
+    const updateMenu = async (id, updatedMenu) => {
+        try {
+            const res = await http.put(`${baseURI}/${id}`, updatedMenu);
+            return res.data.data;
+        } catch (error) {
+            throw new ErrorResponse(
+                error.response.data.code || error.response.status,
+                error.response.data.message || error.message,
+                error.response.data.reason || error.message
+            );
+        }
+    }
+
     const removeMenu = async (id) => {
         try {
             const res = await http.delete(`${baseURI}/${id}`);
@@ -85,5 +98,5 @@ export default function menuService(http) {
         }
     }
 
-    return {addMenu, getMenu, listMenu, listMenuByCategory, removeMenu, listCategory};
+    return {addMenu, getMenu, listMenu, listMenuByCategory, updateMenu, removeMenu, listCategory};
 }

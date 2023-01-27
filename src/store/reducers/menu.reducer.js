@@ -17,7 +17,7 @@ const initialState = {
 const menuReducer = (state = initialState, action) => {
     switch (action.type) {
         case MenuActionType.ADD_MENU:
-            const updatedData = [ ...state.menuList.data ];
+            const updatedData = [...state.menuList.data];
             updatedData.push(action.payload.newMenu);
             return {
                 ...state,
@@ -41,20 +41,23 @@ const menuReducer = (state = initialState, action) => {
                 loading: false,
             };
         case MenuActionType.UPDATE_MENU:
-            const updatedMenus = [...state.menuList];
-            const updatedIndex = updatedMenus.findIndex(c => c.id === action.payload.menu.id);
-            updatedMenus[updatedIndex] = action.payload.menu;
+            const updatedMenus = [...state.menuList.data];
+            const updatedIndex = updatedMenus.findIndex(c => c.id === action.payload.updatedMenu.id);
+            updatedMenus[updatedIndex] = action.payload.updatedMenu;
 
             return {
                 ...state,
                 currentMenu: action.payload.menu,
-                menuList: updatedMenus,
+                menuList: {
+                    ...state.menuList,
+                    data: updatedMenus
+                },
                 loading: false,
             };
         case MenuActionType.REMOVE_MENU:
             return {
                 ...state,
-                menuList:  {
+                menuList: {
                     ...state.menuList,
                     data: state.menuList.data.filter((c) => c.id !== action.payload.id)
                 },

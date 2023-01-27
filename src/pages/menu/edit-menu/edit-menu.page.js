@@ -78,18 +78,14 @@ export default function useEditMenuPage() {
             ...currentMenu,
             name: menuForm.name,
             unitPrice: menuForm.unitPrice,
-            menuCategory: {
-                id: menuForm.menuCategory,
-                name: menuCategories.find(c => c.id === menuForm.menuCategory)
-            },
+            menuCategory: menuCategories.find(c => c.id === Number(menuForm.menuCategory))
         };
-        console.log(updatedMenu);
-        // dispatch(
-        //     menuMiddleware.updateMenu(currentMenu.id, updatedMenu)
-        // ).then((res) => {
-        //     window.alert(`Success Update Menu '${res.name}'`);
-        //     navigate(MENU_LIST_PATH);
-        // });
+        dispatch(
+            menuMiddleware.updateMenu(currentMenu.id, updatedMenu)
+        ).then((res) => {
+            window.alert(`Success Update Menu '${res.name}'`);
+            navigate(MENU_LIST_PATH);
+        });
     };
 
     const handleCancel = () => {

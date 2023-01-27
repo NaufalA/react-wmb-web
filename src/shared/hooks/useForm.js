@@ -10,29 +10,32 @@ const generateForm = (inputs, initialData) => {
 }
 
 export default function useForm(inputs, initialData) {
-    const [form, setForm] = useState(generateForm(inputs, initialData));
-    const [formInputs, setFormInputs] = useState([]);
+    const [formData, setFormData] = useState(generateForm(inputs, initialData));
+    let formInputs = inputs.map(input => ({
+        ...input,
+        value: formData[input.name].toString(),
+    }));
 
     const refreshForm = (data) => {
-        setForm(generateForm(inputs, data));
-        setFormInputs(inputs.map(input => ({
+        setFormData(generateForm(inputs, data));
+        formInputs = (inputs.map(input => ({
             ...input,
-            value: form[input.name].toString(),
+            value: formData[input.name].toString(),
         })));
     }
 
     const handleChange = (e) => {
-        const {target: {name, value}} = e;
-        for (const key of Object.keys(form)) {
-            if (key === name) {
-                setForm(prevState => ({
-                    ...prevState,
-                    [name]: value
+        const {name, value} = e.target;
+        for (const {name: inputName} of inputs) {
+            if (name === inputName) {
+                setFormData((oldData) => ({
+                    ...oldData,
+                    [name]: value,
                 }));
                 break;
             }
         }
     }
 
-    return [formInputs, form, handleChange, refreshForm];
+    return [formInputs, formData, handleChange, refreshForm];
 }

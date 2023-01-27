@@ -6,7 +6,7 @@ import {useSelector} from "react-redux";
 export default function Login() {
     const authError = useSelector(state => state.auth.error);
 
-    const {inputs, handleSubmit, formError} = useLoginPage();
+    const [inputs, data, handleChange, handleSubmit] = useLoginPage();
 
     return (
         <Container className="grid place-content-center">
@@ -20,7 +20,8 @@ export default function Login() {
                 }
                 <GenericForm
                     inputs={inputs}
-                    error={formError}
+                    formData={data}
+                    onChange={handleChange}
                     onSubmit={handleSubmit}
                     submitText="LOGIN"
                 />

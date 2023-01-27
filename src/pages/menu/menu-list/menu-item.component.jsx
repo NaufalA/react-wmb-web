@@ -9,7 +9,7 @@ export default function MenuItem(props) {
             <div className="grow">
                 <h3 className="text-lg font-bold">{data.name}</h3>
                 <p>{data.menuCategory.name}</p>
-                <p>{data.unitPrice}</p>
+                <p>IDR {data.unitPrice}</p>
             </div>
             <div className="flex gap-2">
                 <Button onClick={() => onEdit(data)}>
