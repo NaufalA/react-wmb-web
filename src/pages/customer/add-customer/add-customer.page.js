@@ -1,7 +1,6 @@
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {CUSTOMER_LIST_PATH} from "../../../shared/constants/routes.js";
-import customerMiddleware from "../../../store/middlewares/customer.middleware.js";
 import {useForm} from "../../../shared/hooks/index.js";
 
 const inputs = [
@@ -46,7 +45,7 @@ export default function useAddCustomerPage() {
 
     const handleSubmit = () => {
         dispatch(
-            customerMiddleware.addCustomer({
+            customerAction.addCustomer.requested({
                 name: addCustomerData.name,
                 email: addCustomerData.email,
                 address: addCustomerData.address,

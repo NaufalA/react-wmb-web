@@ -16,7 +16,7 @@ const initialState = {
 
 const customerReducer = (state = initialState, action) => {
     switch (action.type) {
-        case CustomerActionType.ADD_CUSTOMER:
+        case CustomerActionType.ADD_CUSTOMER_FULFILLED:
             const updatedData = [ ...state.customerList.data ];
             updatedData.push(action.payload.newCustomer);
             return {
@@ -28,19 +28,19 @@ const customerReducer = (state = initialState, action) => {
                 },
                 loading: false,
             };
-        case CustomerActionType.GET_CUSTOMER:
+        case CustomerActionType.GET_CUSTOMER_FULFILLED:
             return {
                 ...state,
                 currentCustomer: action.payload.customer,
                 loading: false,
             };
-        case CustomerActionType.LIST_CUSTOMER:
+        case CustomerActionType.LIST_CUSTOMER_FULFILLED:
             return {
                 ...state,
                 customerList: action.payload.customerList,
                 loading: false,
             };
-        case CustomerActionType.UPDATE_CUSTOMER:
+        case CustomerActionType.UPDATE_CUSTOMER_FULFILLED:
             const updatedCustomers = [...state.customerList.data];
             const updatedIndex = updatedCustomers.findIndex(t => t.id === action.payload.updatedCustomer.id);
             updatedCustomers[updatedIndex] = action.payload.updatedCustomer;
@@ -54,7 +54,7 @@ const customerReducer = (state = initialState, action) => {
                 },
                 loading: false,
             };
-        case CustomerActionType.REMOVE_CUSTOMER:
+        case CustomerActionType.REMOVE_CUSTOMER_FULFILLED:
             return {
                 ...state,
                 customerList:  {
@@ -63,11 +63,25 @@ const customerReducer = (state = initialState, action) => {
                 },
                 loading: false,
             };
+        case CustomerActionType.CUSTOMER_ADD_REQUESTED:
+        case CustomerActionType.CUSTOMER_GET_REQUESTED:
+        case CustomerActionType.CUSTOMER_LIST_REQUESTED:
+        case CustomerActionType.CUSTOMER_UPDATE_REQUESTED:
+        case CustomerActionType.CUSTOMER_REMOVE_REQUESTED:
+            return {
+                ...state,
+                loading: true,
+            };
         case CustomerActionType.SET_LOADING:
             return {
                 ...state,
                 loading: action.payload.loading,
             };
+        case CustomerActionType.CUSTOMER_ADD_REJECTED:
+        case CustomerActionType.CUSTOMER_GET_REJECTED:
+        case CustomerActionType.CUSTOMER_LIST_REJECTED:
+        case CustomerActionType.CUSTOMER_UPDATE_REJECTED:
+        case CustomerActionType.CUSTOMER_REMOVE_REJECTED:
         case CustomerActionType.SET_ERROR:
             return {
                 ...state,

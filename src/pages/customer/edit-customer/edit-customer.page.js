@@ -2,8 +2,8 @@ import {useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
 import {CUSTOMER_LIST_PATH} from "../../../shared/constants/routes.js";
-import customerMiddleware from "../../../store/middlewares/customer.middleware.js";
 import {useForm} from "../../../shared/hooks/index.js";
+import {customerAction} from "../../../store/actions/index.js";
 
 const inputs = [
     {
@@ -49,7 +49,7 @@ export default function useEditCustomerPage() {
 
     useEffect(() => {
         if (!currentCustomer || currentCustomer.id !== Number(id)) {
-            dispatch(customerMiddleware.getCustomer(id));
+            dispatch(customerAction.getCustomer.requested(id));
         } else {
             refreshForm(currentCustomer)
         }
@@ -65,7 +65,7 @@ export default function useEditCustomerPage() {
         console.log(updatedCustomer)
 
         dispatch(
-            customerMiddleware.updateCustomer(currentCustomer.id, updatedCustomer)
+            customerAction.updateCustomer.requested(currentCustomer.id, updatedCustomer)
         ).then((res) => {
             window.alert(`Success Update Customer '${res.name}'`);
             navigate(CUSTOMER_LIST_PATH);
