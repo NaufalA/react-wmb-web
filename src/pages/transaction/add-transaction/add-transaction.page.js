@@ -67,18 +67,18 @@ export default function useAddTransactionPage() {
 
         const {target} = e;
 
-        console.log(new Date(target.transactionDate.value).toISOString());
+        const dto = {
+            transactionDate: new Date(target.transactionDate.value).toISOString(),
+            customerName: target.customerName.value,
+            tableId: Number(target.tableId.value),
+            detailList: detailList.map(detail => {
+                const { quantity, priceId } = detail;
+                return { quantity, menuPriceId: priceId };
+            })
+        };
 
         dispatch(
-            transactionMiddleware.addTransaction({
-                transactionDate: new Date(target.transactionDate.value).toISOString(),
-                customerName: target.customerName.value,
-                tableId: Number(target.tableId.value),
-                detailList: detailList.map(detail => {
-                    const { quantity, priceId } = detail;
-                    return { quantity, menuPriceId: priceId };
-                })
-            })
+            transactionMiddleware.addTransaction(dto)
         ).then((res) => {
             window.alert(`Success Create new Transaction '${res.id}'`);
             navigate(TRANSACTION_LIST_PATH);

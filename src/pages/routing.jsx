@@ -2,6 +2,10 @@ import {Outlet, Route, Routes} from "react-router-dom";
 import {
     AUTH_LOGIN_PATH,
     AUTH_PATH,
+    CUSTOMER_ADD_PATH,
+    CUSTOMER_EDIT_PATH,
+    CUSTOMER_LIST_PATH,
+    CUSTOMER_PATH,
     ERROR_FORBIDDEN_PATH,
     MENU_ADD_PATH,
     MENU_EDIT_PATH,
@@ -13,7 +17,7 @@ import {
     TABLE_PATH,
     TRANSACTION_ADD_PATH,
     TRANSACTION_LIST_PATH,
-    TRANSACTION_PATH
+    TRANSACTION_PATH,
 } from "../shared/constants/routes.js";
 import AuthRoot from "./auth/auth-root.page.jsx";
 import Login from "./auth/login/login.page.jsx";
@@ -31,6 +35,10 @@ import TransactionList from "./transaction/transaction-list/transaction-list.pag
 import TransactionDetail from "./transaction/transaction-detail/transaction-detail.page.jsx";
 import AddTransaction from "./transaction/add-transaction/add-transaction.page.jsx";
 import EditMenu from "./menu/edit-menu/edit-menu.page.jsx";
+import CustomerRoot from "./customer/customer-root.page.jsx";
+import CustomerList from "./customer/customer-list/customer-list.page.jsx";
+import AddCustomer from "./customer/add-customer/add-customer.page.jsx";
+import EditCustomer from "./customer/edit-customer/edit-customer.page.jsx";
 
 export default function Routing() {
     const routes = [
@@ -106,6 +114,24 @@ export default function Routing() {
                 //     path: `${TRANSACTION_EDIT_PATH}/:id`,
                 //     element: <EditTransaction />
                 // },
+            ],
+        },
+        {
+            path: CUSTOMER_PATH,
+            element: <CustomerRoot/>,
+            children: [
+                {
+                    path: CUSTOMER_LIST_PATH,
+                    element: <CustomerList/>,
+                },
+                {
+                    path: CUSTOMER_ADD_PATH,
+                    element: <AddCustomer/>,
+                },
+                {
+                    path: `${CUSTOMER_EDIT_PATH}/:id`,
+                    element: <EditCustomer/>
+                },
             ],
         },
         {

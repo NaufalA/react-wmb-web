@@ -77,7 +77,7 @@ export default function MenuSelector(props) {
                     <form onSubmit={handleAddItem} className="flex flex-col gap-4">
                         <div>
                             <h3 className="font-bold">{selectedMenu.name}</h3>
-                            <h3 className>{selectedMenu.unitPrice}</h3>
+                            <h3>{selectedMenu.unitPrice}</h3>
                         </div>
                         <FormInput
                             title="Quantity"

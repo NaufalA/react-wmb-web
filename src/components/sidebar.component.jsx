@@ -2,7 +2,12 @@ import {useDispatch, useSelector} from "react-redux";
 import {authMiddleware} from "../store/middlewares/index.js";
 import {Button} from "./buttons/index.js";
 import {NavLink} from "react-router-dom";
-import {MENU_LIST_PATH, TABLE_LIST_PATH, TRANSACTION_LIST_PATH} from "../shared/constants/routes.js";
+import {
+    CUSTOMER_LIST_PATH,
+    MENU_LIST_PATH,
+    TABLE_LIST_PATH,
+    TRANSACTION_LIST_PATH
+} from "../shared/constants/routes.js";
 
 const menu = [
     {
@@ -16,6 +21,10 @@ const menu = [
     {
         path: TRANSACTION_LIST_PATH,
         label: "Manage Transaction"
+    },
+    {
+        path: CUSTOMER_LIST_PATH,
+        label: "Manage Customer"
     },
 ]
 

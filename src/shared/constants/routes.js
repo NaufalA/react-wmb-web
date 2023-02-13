@@ -16,4 +16,9 @@ export const TRANSACTION_LIST_PATH = "/transaction";
 export const TRANSACTION_ADD_PATH = "/transaction/add";
 export const TRANSACTION_EDIT_PATH = "/transaction/edit";
 
+export const CUSTOMER_PATH = "/customer";
+export const CUSTOMER_LIST_PATH = "/customer";
+export const CUSTOMER_ADD_PATH = "/customer/add";
+export const CUSTOMER_EDIT_PATH = "/customer/edit";
+
 export const ERROR_FORBIDDEN_PATH = "/forbidden";

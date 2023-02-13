@@ -3,8 +3,8 @@ export default function Button(props) {
 
     return (
         <button
-            className={`p-2.5 bg-info text-background uppercase font-bold rounded-md ${className || ""}`}
             {...others}
+            className={`p-2.5 bg-info text-background uppercase font-bold rounded-md ${className || ""}`}
         >
             {children}
         </button>
