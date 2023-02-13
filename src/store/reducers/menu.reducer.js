@@ -16,7 +16,7 @@ const initialState = {
 
 const menuReducer = (state = initialState, action) => {
     switch (action.type) {
-        case MenuActionType.ADD_MENU:
+        case MenuActionType.ADD_MENU_FULFILLED:
             const updatedData = [...state.menuList.data];
             updatedData.push(action.payload.newMenu);
             return {
@@ -28,19 +28,19 @@ const menuReducer = (state = initialState, action) => {
                 },
                 loading: false,
             };
-        case MenuActionType.GET_MENU:
+        case MenuActionType.GET_MENU_FULFILLED:
             return {
                 ...state,
                 currentMenu: action.payload.menu,
                 loading: false,
             };
-        case MenuActionType.LIST_MENU:
+        case MenuActionType.LIST_MENU_FULFILLED:
             return {
                 ...state,
                 menuList: action.payload.menuList,
                 loading: false,
             };
-        case MenuActionType.UPDATE_MENU:
+        case MenuActionType.UPDATE_MENU_FULFILLED:
             const updatedMenus = [...state.menuList.data];
             const updatedIndex = updatedMenus.findIndex(c => c.id === action.payload.updatedMenu.id);
             updatedMenus[updatedIndex] = action.payload.updatedMenu;
@@ -54,7 +54,7 @@ const menuReducer = (state = initialState, action) => {
                 },
                 loading: false,
             };
-        case MenuActionType.REMOVE_MENU:
+        case MenuActionType.REMOVE_MENU_FULFILLED:
             return {
                 ...state,
                 menuList: {
@@ -63,11 +63,25 @@ const menuReducer = (state = initialState, action) => {
                 },
                 loading: false,
             };
+        case MenuActionType.MENU_ADD_REQUESTED:
+        case MenuActionType.MENU_GET_REQUESTED:
+        case MenuActionType.MENU_LIST_REQUESTED:
+        case MenuActionType.MENU_UPDATE_REQUESTED:
+        case MenuActionType.MENU_REMOVE_REQUESTED:
+            return {
+                ...state,
+                loading: true,
+            };
         case MenuActionType.SET_LOADING:
             return {
                 ...state,
                 loading: action.payload.loading,
             };
+        case MenuActionType.MENU_ADD_REJECTED:
+        case MenuActionType.MENU_GET_REJECTED:
+        case MenuActionType.MENU_LIST_REJECTED:
+        case MenuActionType.MENU_UPDATE_REJECTED:
+        case MenuActionType.MENU_REMOVE_REJECTED:
         case MenuActionType.SET_ERROR:
             return {
                 ...state,

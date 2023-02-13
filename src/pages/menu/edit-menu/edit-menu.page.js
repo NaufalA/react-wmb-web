@@ -2,11 +2,12 @@ import {useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {MENU_LIST_PATH} from "../../../shared/constants/routes.js";
-import menuMiddleware from "../../../store/middlewares/menu.middleware.js";
 import services from "../../../services/index.js";
 import {useForm} from "../../../shared/hooks/index.js";
+import {menuAction} from "../../../store/actions/index.js";
 
 export default function useEditMenuPage() {
+    const loading  = useSelector(state => state.menu.loading);
 
     const {id} = useParams();
 
@@ -59,8 +60,8 @@ export default function useEditMenuPage() {
     );
 
     useEffect(() => {
-        if (!currentMenu || currentMenu.id !== Number(id)) {
-            dispatch(menuMiddleware.getMenu(id));
+        if ((!currentMenu || currentMenu.id !== Number(id)) && !loading) {
+            dispatch(menuAction.getMenu.requested(id));
         } else {
             refreshForm({
                     name: currentMenu?.name,
@@ -81,7 +82,7 @@ export default function useEditMenuPage() {
             menuCategory: menuCategories.find(c => c.id === Number(menuForm.menuCategory))
         };
         dispatch(
-            menuMiddleware.updateMenu(currentMenu.id, updatedMenu)
+            menuAction.updateMenu.requested(currentMenu.id, updatedMenu)
         ).then((res) => {
             window.alert(`Success Update Menu '${res.name}'`);
             navigate(MENU_LIST_PATH);

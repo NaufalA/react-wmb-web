@@ -2,8 +2,8 @@ import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {useEffect, useState} from "react";
 import {MENU_LIST_PATH} from "../../../shared/constants/routes.js";
-import menuMiddleware from "../../../store/middlewares/menu.middleware.js";
 import services from "../../../services/index.js";
+import {menuAction} from "../../../store/actions/index.js";
 
 export default function useAddMenuPage() {
     const [menuCategories, setMenuCategories] = useState(null);
@@ -48,7 +48,7 @@ export default function useAddMenuPage() {
         const { target } = e;
 
         dispatch(
-            menuMiddleware.addMenu({
+            menuAction.addMenu.requested({
                 name: target.name.value,
                 unitPrice: target.unitPrice.value,
                 menuCategoryId: target.menuCategory.value,
