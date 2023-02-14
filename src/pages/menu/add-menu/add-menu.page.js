@@ -46,7 +46,7 @@ export default function useAddMenuPage() {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        const { target } = e;
+        const {target} = e;
 
         dispatch(
             menuAction.addMenu.requested({
@@ -55,18 +55,15 @@ export default function useAddMenuPage() {
                 menuCategoryId: target.menuCategory.value,
             })
         );
-    };
-
-    useEffect(() => {
         const unsubscribe = store.subscribe(() => {
             const menu = store.getState().menu;
             if (menu.currentMenu && !menu.error) {
                 window.alert(`Success Create new Menu '${menu.currentMenu.name}'`);
                 navigate(MENU_LIST_PATH);
+                unsubscribe();
             }
         });
-        return () => unsubscribe();
-    },[]);
+    };
 
     return {inputs, formError, handleSubmit};
 }

@@ -5,6 +5,7 @@ import {MENU_LIST_PATH} from "../../../shared/constants/routes.js";
 import services from "../../../services/index.js";
 import {useForm} from "../../../shared/hooks/index.js";
 import {menuAction} from "../../../store/actions/index.js";
+import store from "../../../store/store.js";
 
 export default function useEditMenuPage() {
     const loading  = useSelector(state => state.menu.loading);
@@ -81,11 +82,14 @@ export default function useEditMenuPage() {
             unitPrice: menuForm.unitPrice,
             menuCategory: menuCategories.find(c => c.id === Number(menuForm.menuCategory))
         };
-        dispatch(
-            menuAction.updateMenu.requested(currentMenu.id, updatedMenu)
-        ).then((res) => {
-            window.alert(`Success Update Menu '${res.name}'`);
-            navigate(MENU_LIST_PATH);
+        dispatch(menuAction.updateMenu.requested(currentMenu.id, updatedMenu));
+        const unsubscribe = store.subscribe(() => {
+            const menu = store.getState().menu;
+            if (menu.currentMenu && !menu.error) {
+                window.alert(`Success Update Menu '${menu.currentMenu.id}'`);
+                navigate(MENU_LIST_PATH);
+                unsubscribe();
+            }
         });
     };
 

@@ -4,6 +4,7 @@ import {useEffect} from "react";
 import {CUSTOMER_LIST_PATH} from "../../../shared/constants/routes.js";
 import {useForm} from "../../../shared/hooks/index.js";
 import {customerAction} from "../../../store/actions/index.js";
+import store from "../../../store/store.js";
 
 const inputs = [
     {
@@ -66,9 +67,14 @@ export default function useEditCustomerPage() {
 
         dispatch(
             customerAction.updateCustomer.requested(currentCustomer.id, updatedCustomer)
-        ).then((res) => {
-            window.alert(`Success Update Customer '${res.name}'`);
-            navigate(CUSTOMER_LIST_PATH);
+        );
+        const unsubscribe = store.subscribe(() => {
+            const customer = store.getState().customer;
+            if (customer.currentCustomer && !customer.error) {
+                window.alert(`Success Update Customer '${customer.currentCustomer.name}'`);
+                navigate(CUSTOMER_LIST_PATH);
+                unsubscribe();
+            }
         });
     };
 

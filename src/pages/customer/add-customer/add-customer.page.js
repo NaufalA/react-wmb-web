@@ -3,7 +3,6 @@ import {useDispatch} from "react-redux";
 import {CUSTOMER_LIST_PATH} from "../../../shared/constants/routes.js";
 import {useForm} from "../../../shared/hooks/index.js";
 import {customerAction} from "../../../store/actions/index.js";
-import {useEffect} from "react";
 import store from "../../../store/store.js";
 
 const inputs = [
@@ -54,22 +53,19 @@ export default function useAddCustomerPage() {
                 address: addCustomerData.address,
             })
         );
+        const unsubscribe = store.subscribe(() => {
+            const customer = store.getState().customer;
+            if (customer.currentCustomer && !customer.error) {
+                window.alert(`Success Create new Customer '${customer.currentCustomer.name}'`);
+                navigate(CUSTOMER_LIST_PATH);
+                unsubscribe();
+            }
+        });
     };
 
     const handleCancel = () => {
         navigate(CUSTOMER_LIST_PATH);
     };
-
-    useEffect(() => {
-        const unsubscribe = store.subscribe(() => {
-            const customer = store.getState().customer;
-            if (customer.currentCustomer && !customer.error) {
-                window.alert(`Success Create new Menu '${customer.currentCustomer.name}'`);
-                navigate(CUSTOMER_LIST_PATH);
-            }
-        });
-        return () => unsubscribe();
-    },[]);
 
     return [addCustomerInputs, addCustomerData, handleChange, handleSubmit, handleCancel];
 }

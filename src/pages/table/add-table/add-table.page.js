@@ -1,6 +1,6 @@
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {TABLE_LIST_PATH} from "../../../shared/constants/routes.js";
 import {tableAction} from "../../../store/actions/index.js";
 import store from "../../../store/store.js";
@@ -47,22 +47,20 @@ export default function useAddTablePage() {
                 availability: target.availability.value,
             })
         );
+
+        const unsubscribe = store.subscribe(() => {
+            const table = store.getState().table;
+            if (table.currentTable && !table.error) {
+                window.alert(`Success Create new Table '${table.currentTable.name}'`);
+                navigate(TABLE_LIST_PATH);
+                unsubscribe();
+            }
+        });
     };
 
     const onCancel = () => {
         navigate(TABLE_LIST_PATH);
     };
-
-    useEffect(() => {
-        const unsubscribe = store.subscribe(() => {
-            const table = store.getState().table;
-            if (table.currentTable && !table.error) {
-                window.alert(`Success Create new Menu '${table.currentTable.name}'`);
-                navigate(TABLE_LIST_PATH);
-            }
-        });
-        return () => unsubscribe();
-    },[]);
 
     return {inputs, formError, handleSubmit, onCancel};
 }

@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {TABLE_LIST_PATH} from "../../../shared/constants/routes.js";
 import {tableAction} from "../../../store/actions/index.js";
+import store from "../../../store/store.js";
 
 export default function useEditTablePage() {
 
@@ -73,7 +74,6 @@ export default function useEditTablePage() {
             onChange: handleChange,
         },
     ];
-
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -85,9 +85,14 @@ export default function useEditTablePage() {
                 name: target.name.value,
                 availability: target.availability.value === "true",
             })
-        ).then((res) => {
-            window.alert(`Success Update Table '${res.name}'`);
-            navigate(TABLE_LIST_PATH);
+        );
+        const unsubscribe = store.subscribe(() => {
+            const table = store.getState().table;
+            if (table.currentTable && !table.error) {
+                window.alert(`Success Update Table '${table.currentTable.id}'`);
+                navigate(TABLE_LIST_PATH);
+                unsubscribe();
+            }
         });
     };
 
