@@ -4,6 +4,7 @@ import {useEffect, useState} from "react";
 import {MENU_LIST_PATH} from "../../../shared/constants/routes.js";
 import services from "../../../services/index.js";
 import {menuAction} from "../../../store/actions/index.js";
+import store from "../../../store/store.js";
 
 export default function useAddMenuPage() {
     const [menuCategories, setMenuCategories] = useState(null);
@@ -53,11 +54,19 @@ export default function useAddMenuPage() {
                 unitPrice: target.unitPrice.value,
                 menuCategoryId: target.menuCategory.value,
             })
-        ).then((res) => {
-            window.alert(`Success Create new Menu '${res.name}'`);
-            navigate(MENU_LIST_PATH);
-        });
+        );
     };
+
+    useEffect(() => {
+        const unsubscribe = store.subscribe(() => {
+            const menu = store.getState().menu;
+            if (menu.currentMenu && !menu.error) {
+                window.alert(`Success Create new Menu '${menu.currentMenu.name}'`);
+                navigate(MENU_LIST_PATH);
+            }
+        });
+        return () => unsubscribe();
+    },[]);
 
     return {inputs, formError, handleSubmit};
 }

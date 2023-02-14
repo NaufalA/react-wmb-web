@@ -35,7 +35,6 @@ function* listMenu(action) {
 function* updateMenu(action) {
     const {id, updatedMenu} = action.payload;
     try {
-        yield put(menuAction.setLoading(true));
         const menu = yield call(services.menu.updateMenu, id, updatedMenu);
         yield put(menuAction.updateMenu.fulfilled(menu));
     } catch (error) {

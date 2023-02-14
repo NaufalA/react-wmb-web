@@ -1,8 +1,8 @@
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {TABLE_LIST_PATH} from "../../../shared/constants/routes.js";
-import tableMiddleware from "../../../store/middlewares/table.middleware.js";
+import {tableAction} from "../../../store/actions/index.js";
 
 export default function useAddTablePage() {
     const inputs = [
@@ -41,19 +41,27 @@ export default function useAddTablePage() {
         const {target} = e;
 
         dispatch(
-            tableMiddleware.addTable({
+            tableAction.addTable.requested({
                 name: target.name.value,
                 availability: target.availability.value,
             })
-        ).then((res) => {
-            window.alert(`Success Create new Table '${res.name}'`);
-            navigate(TABLE_LIST_PATH);
-        });
+        );
     };
 
     const onCancel = () => {
         navigate(TABLE_LIST_PATH);
     };
+
+    useEffect(() => {
+        const unsubscribe = store.subscribe(() => {
+            const table = store.getState().table;
+            if (table.currentTable && !table.error) {
+                window.alert(`Success Create new Menu '${table.currentTable.name}'`);
+                navigate(TABLE_LIST_PATH);
+            }
+        });
+        return () => unsubscribe();
+    },[]);
 
     return {inputs, formError, handleSubmit, onCancel};
 }

@@ -46,7 +46,6 @@ function* updateCustomer(action) {
 function* removeCustomer(action) {
     const {id} = action.payload;
     try {
-        yield put(customerAction.setLoading(true));
         const removedId = yield call(services.customer.removeCustomer, id);
         yield put(customerAction.removeCustomer.fulfilled(removedId));
     } catch (error) {

@@ -2,8 +2,8 @@ import {withList} from "../../../components/hoc/index.js";
 import {TABLE_ADD_PATH, TABLE_EDIT_PATH} from "../../../shared/constants/routes.js";
 import TableItem from "./table-item.component.jsx";
 import {useDispatch} from "react-redux";
-import {tableMiddleware} from "../../../store/middlewares/index.js";
 import {ListGroup} from "../../../components/containers/index.js";
+import {tableAction} from "../../../store/actions/index.js";
 
 const List = (props) => {
     const { data, navigate, onDelete } = props;
@@ -16,7 +16,7 @@ const List = (props) => {
         if (
             window.confirm(`Are you sure you want to remove Table '${d.name}'`)
         ) {
-            dispatch(tableMiddleware.removeTable(d.id)).then((res) => {
+            dispatch(tableAction.removeTable.requested(d.id)).then((res) => {
                 window.alert(`Success Remove Table with ID ${res}`);
                 onDelete();
             });
@@ -37,7 +37,7 @@ const List = (props) => {
 };
 
 const TableList = withList(List, {
-    getDataAction: tableMiddleware.listTable,
+    getDataAction: tableAction.listTable.requested,
     dataSelector: (state) => state.table.tableList,
     loadingSelector: (state) => state.table.loading,
     label: "Table",

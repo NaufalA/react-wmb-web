@@ -16,7 +16,7 @@ const initialState = {
 
 const tableReducer = (state = initialState, action) => {
     switch (action.type) {
-        case TableActionType.ADD_TABLE:
+        case TableActionType.ADD_TABLE_FULFILLED:
             const updatedData = [ ...state.tableList.data ];
             updatedData.push(action.payload.newTable);
             return {
@@ -28,19 +28,19 @@ const tableReducer = (state = initialState, action) => {
                 },
                 loading: false,
             };
-        case TableActionType.GET_TABLE:
+        case TableActionType.GET_TABLE_FULFILLED:
             return {
                 ...state,
                 currentTable: action.payload.table,
                 loading: false,
             };
-        case TableActionType.LIST_TABLE:
+        case TableActionType.LIST_TABLE_FULFILLED:
             return {
                 ...state,
                 tableList: action.payload.tableList,
                 loading: false,
             };
-        case TableActionType.UPDATE_TABLE:
+        case TableActionType.UPDATE_TABLE_FULFILLED:
             const updatedTables = [...state.tableList.data];
             const updatedIndex = updatedTables.findIndex(t => t.id === action.payload.updatedTable.id);
             updatedTables[updatedIndex] = action.payload.updatedTable;
@@ -54,7 +54,7 @@ const tableReducer = (state = initialState, action) => {
                 },
                 loading: false,
             };
-        case TableActionType.REMOVE_TABLE:
+        case TableActionType.REMOVE_TABLE_FULFILLED:
             return {
                 ...state,
                 tableList:  {
@@ -63,11 +63,25 @@ const tableReducer = (state = initialState, action) => {
                 },
                 loading: false,
             };
+        case TableActionType.TABLE_ADD_REQUESTED:
+        case TableActionType.TABLE_GET_REQUESTED:
+        case TableActionType.TABLE_LIST_REQUESTED:
+        case TableActionType.TABLE_UPDATE_REQUESTED:
+        case TableActionType.TABLE_REMOVE_REQUESTED:
+            return {
+                ...state,
+                loading: true,
+            };
         case TableActionType.SET_LOADING:
             return {
                 ...state,
                 loading: action.payload.loading,
             };
+        case TableActionType.TABLE_ADD_REJECTED:
+        case TableActionType.TABLE_GET_REJECTED:
+        case TableActionType.TABLE_LIST_REJECTED:
+        case TableActionType.TABLE_UPDATE_REJECTED:
+        case TableActionType.TABLE_REMOVE_REJECTED:
         case TableActionType.SET_ERROR:
             return {
                 ...state,

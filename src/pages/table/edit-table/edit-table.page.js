@@ -2,7 +2,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {TABLE_LIST_PATH} from "../../../shared/constants/routes.js";
-import tableMiddleware from "../../../store/middlewares/table.middleware.js";
+import {tableAction} from "../../../store/actions/index.js";
 
 export default function useEditTablePage() {
 
@@ -28,7 +28,7 @@ export default function useEditTablePage() {
                 availability: currentTable.availability,
             });
         } else {
-            dispatch(tableMiddleware.getTable(id));
+            dispatch(tableAction.getTable.requested(id));
         }
     }, [dispatch, id, currentTable]);
 
@@ -80,7 +80,7 @@ export default function useEditTablePage() {
         const { target } = e;
 
         dispatch(
-            tableMiddleware.updateTable(currentTable.id, {
+            tableAction.updateTable.requested(currentTable.id, {
                 ...currentTable,
                 name: target.name.value,
                 availability: target.availability.value === "true",
