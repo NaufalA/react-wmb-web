@@ -4,6 +4,7 @@ import {CUSTOMER_LIST_PATH} from "../../../shared/constants/routes.js";
 import {useForm} from "../../../shared/hooks/index.js";
 import {customerAction} from "../../../store/actions/index.js";
 import {useEffect} from "react";
+import store from "../../../store/store.js";
 
 const inputs = [
     {

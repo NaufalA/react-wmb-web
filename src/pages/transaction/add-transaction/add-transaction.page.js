@@ -2,8 +2,9 @@ import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {useEffect, useState} from "react";
 import {TRANSACTION_LIST_PATH} from "../../../shared/constants/routes.js";
-import transactionMiddleware from "../../../store/middlewares/transaction.middleware.js";
 import services from "../../../services/index.js";
+import {transactionAction} from "../../../store/actions/index.js";
+import store from "../../../store/store.js";
 
 export default function useAddTransactionPage() {
     const [tables, setTables] = useState(null);
@@ -46,10 +47,20 @@ export default function useAddTransactionPage() {
     const [detailList, setDetailList] = useState([]);
 
     const addDetailItem = (detail) => {
-        setDetailList((oldState) => [
-            ...oldState,
-            detail
-        ]);
+        const existingIdx = detailList.findIndex(d => d.productId === detail.productId);
+        if (existingIdx !== -1) {
+            const updatedDetails = [...detailList];
+            updatedDetails[existingIdx] = {
+                ...updatedDetails[existingIdx],
+                quantity: Number(updatedDetails[existingIdx].quantity) + Number(detail.quantity),
+            };
+            setDetailList(updatedDetails);
+        } else {
+            setDetailList((oldState) => [
+                ...oldState,
+                detail
+            ]);
+        }
     }
 
     const removeDetailItem = (index) => {
@@ -72,22 +83,30 @@ export default function useAddTransactionPage() {
             customerName: target.customerName.value,
             tableId: Number(target.tableId.value),
             detailList: detailList.map(detail => {
-                const { quantity, priceId } = detail;
-                return { quantity, menuPriceId: priceId };
+                const {quantity, priceId} = detail;
+                return {quantity, menuPriceId: priceId};
             })
         };
 
         dispatch(
-            transactionMiddleware.addTransaction(dto)
-        ).then((res) => {
-            window.alert(`Success Create new Transaction '${res.id}'`);
-            navigate(TRANSACTION_LIST_PATH);
-        });
+            transactionAction.addTransaction(dto)
+        );
     };
 
     const onCancel = () => {
         navigate(TRANSACTION_LIST_PATH);
     };
+
+    useEffect(() => {
+        const unsubscribe = store.subscribe(() => {
+            const transaction = store.getState().transaction;
+            if (transaction.currentTransaction && !transaction.error) {
+                window.alert(`Success Create new Transaction '${transaction.currentTransaction.id}'`);
+                navigate(TRANSACTION_LIST_PATH);
+            }
+        });
+        return () => unsubscribe();
+    }, []);
 
     return {inputs, detailList, addDetailItem, removeDetailItem, handleSubmit, onCancel};
 }

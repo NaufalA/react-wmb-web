@@ -42,6 +42,8 @@ export default function MenuSelector(props) {
             unitPrice: selectedMenu.unitPrice,
             price: quantity.value * selectedMenu.unitPrice,
         });
+
+        setSelectedMenu(undefined);
     }
 
     return (

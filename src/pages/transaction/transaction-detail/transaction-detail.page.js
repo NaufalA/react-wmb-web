@@ -1,7 +1,7 @@
 import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
-import {transactionMiddleware} from "../../../store/middlewares/index.js";
+import {transactionAction} from "../../../store/actions/index.js";
 
 export default function useTransactionDetailPage() {
     const { id } = useParams();
@@ -13,7 +13,7 @@ export default function useTransactionDetailPage() {
     const dispatch = useDispatch();
     useEffect(() => {
         if (!transaction || transaction.id !== Number(id)) {
-            dispatch(transactionMiddleware.getTransaction(id));
+            dispatch(transactionAction.getTransaction.requested(id));
         }
     }, [dispatch, id, transaction]);
 

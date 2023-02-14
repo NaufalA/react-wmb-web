@@ -1,8 +1,8 @@
 import {withList} from "../../../components/hoc/index.js";
 import {TRANSACTION_ADD_PATH, TRANSACTION_PATH} from "../../../shared/constants/routes.js";
 import TransactionItem from "./transaction-item.component.jsx";
-import {transactionMiddleware} from "../../../store/middlewares/index.js";
 import {ListGroup} from "../../../components/containers/index.js";
+import {transactionAction} from "../../../store/actions/index.js";
 
 const List = (props) => {
     const { data, navigate } = props;
@@ -24,7 +24,7 @@ const List = (props) => {
 };
 
 const TransactionList = withList(List, {
-    getDataAction: transactionMiddleware.listTransaction,
+    getDataAction: transactionAction.listTransaction.requested,
     dataSelector: (state) => state.transaction.transactionList,
     loadingSelector: (state) => state.transaction.loading,
     label: "Transaction",

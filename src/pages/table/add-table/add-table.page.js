@@ -3,6 +3,7 @@ import {useDispatch} from "react-redux";
 import {useEffect, useState} from "react";
 import {TABLE_LIST_PATH} from "../../../shared/constants/routes.js";
 import {tableAction} from "../../../store/actions/index.js";
+import store from "../../../store/store.js";
 
 export default function useAddTablePage() {
     const inputs = [

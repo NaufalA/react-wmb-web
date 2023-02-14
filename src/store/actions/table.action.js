@@ -8,7 +8,6 @@ export const TableActionType = {
     ...createAsyncActionTypes("REMOVE_TABLE", "table/remove"),
     SET_LOADING: "table/set-loading",
     SET_ERROR: "table/set-error",
-    SET_CURRENT_TABLE: "table/set-current"
 };
 
 export const tableAction = {
@@ -90,8 +89,4 @@ export const tableAction = {
         type: TableActionType.SET_ERROR,
         payload: {error}
     }),
-    setCurrentTable: (currentTable) => ({
-        type: TableActionType.SET_CURRENT_TABLE,
-        payload: {currentTable}
-    })
 };

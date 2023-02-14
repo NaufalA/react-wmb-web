@@ -16,7 +16,7 @@ const initialState = {
 
 const transactionReducer = (state = initialState, action) => {
     switch (action.type) {
-        case TransactionActionType.ADD_TRANSACTION:
+        case TransactionActionType.ADD_TRANSACTION_FULFILLED:
             const updatedData = [ ...state.transactionList.data ];
             updatedData.push(action.payload.newTransaction);
             return {
@@ -28,19 +28,19 @@ const transactionReducer = (state = initialState, action) => {
                 },
                 loading: false,
             };
-        case TransactionActionType.GET_TRANSACTION:
+        case TransactionActionType.GET_TRANSACTION_FULFILLED:
             return {
                 ...state,
                 currentTransaction: action.payload.transaction,
                 loading: false,
             };
-        case TransactionActionType.LIST_TRANSACTION:
+        case TransactionActionType.LIST_TRANSACTION_FULFILLED:
             return {
                 ...state,
                 transactionList: action.payload.transactionList,
                 loading: false,
             };
-        case TransactionActionType.UPDATE_TRANSACTION:
+        case TransactionActionType.UPDATE_TRANSACTION_FULFILLED:
             const updatedTransactions = [...state.transactionList.data];
             const updatedIndex = updatedTransactions.findIndex(t => t.id === action.payload.updatedTransaction.id);
             updatedTransactions[updatedIndex] = action.payload.updatedTransaction;
@@ -54,7 +54,7 @@ const transactionReducer = (state = initialState, action) => {
                 },
                 loading: false,
             };
-        case TransactionActionType.REMOVE_TRANSACTION:
+        case TransactionActionType.REMOVE_TRANSACTION_FULFILLED:
             return {
                 ...state,
                 transactionList:  {
@@ -63,11 +63,25 @@ const transactionReducer = (state = initialState, action) => {
                 },
                 loading: false,
             };
+        case TransactionActionType.TRANSACTION_ADD_REQUESTED:
+        case TransactionActionType.TRANSACTION_GET_REQUESTED:
+        case TransactionActionType.TRANSACTION_LIST_REQUESTED:
+        case TransactionActionType.TRANSACTION_UPDATE_REQUESTED:
+        case TransactionActionType.TRANSACTION_REMOVE_REQUESTED:
+            return {
+                ...state,
+                loading: true,
+            };
         case TransactionActionType.SET_LOADING:
             return {
                 ...state,
                 loading: action.payload.loading,
             };
+        case TransactionActionType.TRANSACTION_ADD_REJECTED:
+        case TransactionActionType.TRANSACTION_GET_REJECTED:
+        case TransactionActionType.TRANSACTION_LIST_REJECTED:
+        case TransactionActionType.TRANSACTION_UPDATE_REJECTED:
+        case TransactionActionType.TRANSACTION_REMOVE_REJECTED:
         case TransactionActionType.SET_ERROR:
             return {
                 ...state,

@@ -1,11 +1,12 @@
 import {all, call, spawn} from "redux-saga/effects";
-import {customerSaga, menuSaga, tableSaga} from "./saga";
+import {customerSaga, menuSaga, tableSaga, transactionSaga} from "./saga";
 
 export default function* rootSaga() {
     const sagas = [
         menuSaga,
         customerSaga,
-        tableSaga
+        tableSaga,
+        transactionSaga
     ];
 
     yield all(sagas.map(saga =>
