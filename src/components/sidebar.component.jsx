@@ -1,5 +1,4 @@
 import {useDispatch, useSelector} from "react-redux";
-import {authMiddleware} from "../store/middlewares/index.js";
 import {Button} from "./buttons/index.js";
 import {NavLink} from "react-router-dom";
 import {
@@ -8,6 +7,7 @@ import {
     TABLE_LIST_PATH,
     TRANSACTION_LIST_PATH
 } from "../shared/constants/routes.js";
+import {authAction} from "../store/actions/index.js";
 
 const menu = [
     {
@@ -33,7 +33,7 @@ export default function Sidebar() {
 
     const dispatch = useDispatch();
     const handleLogout = () => {
-        dispatch(authMiddleware.logout());
+        dispatch(authAction.logout.requested());
     }
 
     if (!isLoggedIn) return "";

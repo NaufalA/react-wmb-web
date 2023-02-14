@@ -1,8 +1,9 @@
 import {all, call, spawn} from "redux-saga/effects";
-import {customerSaga, menuSaga, tableSaga, transactionSaga} from "./saga";
+import {authSaga, customerSaga, menuSaga, tableSaga, transactionSaga} from "./saga";
 
 export default function* rootSaga() {
     const sagas = [
+        authSaga,
         menuSaga,
         customerSaga,
         tableSaga,

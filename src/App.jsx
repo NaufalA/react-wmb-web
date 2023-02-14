@@ -4,9 +4,10 @@ import Routing from "./pages/routing.jsx";
 import {useEffect, useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {authMiddleware} from "./store/middlewares/index.js";
+import {authAction} from "./store/actions/index.js";
 
 function App() {
+    const loading = useSelector(state => state.auth.loading);
     const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
     const user = useSelector(state => state.auth.user);
 
@@ -17,13 +18,9 @@ function App() {
     const navigate = useNavigate();
     useEffect(() => {
         if (isLoggedIn && user) {
-            navigate("/", {replace: true})
-        } else if (user === undefined) {
-            dispatch(authMiddleware.validate()).then((res) => {
-                if (res.fulfilled) {
-                    navigate(prevPath, {replace: true});
-                }
-            });
+            navigate(prevPath.includes("auth") || !prevPath ? "/" : prevPath , {replace: true});
+        } else if (!loading && user === undefined) {
+            dispatch(authAction.validate.requested());
         }
     }, [isLoggedIn, user]);
 

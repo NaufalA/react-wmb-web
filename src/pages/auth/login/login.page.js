@@ -1,6 +1,6 @@
-import {authMiddleware} from "../../../store/middlewares/index.js";
 import {useDispatch} from "react-redux";
 import {useForm} from "../../../shared/hooks/index.js";
+import {authAction} from "../../../store/actions/index.js";
 
 const inputs = [
     {
@@ -39,7 +39,7 @@ export default function useLoginPage() {
             password: loginData.password
         }
 
-        dispatch(authMiddleware.login(dto));
+        dispatch(authAction.login.requested(dto));
     }
 
     return [loginInputs, loginData, handleChange, handleSubmit];

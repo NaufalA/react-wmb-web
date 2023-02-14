@@ -8,7 +8,7 @@ const initialState = {
 };
 const authReducer = (state = initialState, action) => {
     switch (action.type) {
-        case AuthActionType.AUTH_LOGIN:
+        case AuthActionType.AUTH_LOGIN_FULFILLED:
             return {
                 ...state,
                 user: action.payload,
@@ -16,7 +16,7 @@ const authReducer = (state = initialState, action) => {
                 loading: false,
                 error: undefined,
             };
-        case AuthActionType.AUTH_VALIDATE:
+        case AuthActionType.AUTH_VALIDATE_FULFILLED:
             return {
                 ...state,
                 user: action.payload,
@@ -24,7 +24,7 @@ const authReducer = (state = initialState, action) => {
                 loading: false,
                 error: undefined,
             };
-        case AuthActionType.AUTH_LOGOUT:
+        case AuthActionType.AUTH_LOGOUT_FULFILLED:
             return {
                 ...state,
                 user: null,
@@ -32,11 +32,21 @@ const authReducer = (state = initialState, action) => {
                 loading: false,
                 error: undefined,
             };
+        case AuthActionType.AUTH_LOGIN_REQUESTED:
+        case AuthActionType.AUTH_VALIDATE_REQUESTED:
+        case AuthActionType.AUTH_LOGOUT_REQUESTED:
+            return {
+                ...state,
+                loading: true,
+            };
         case AuthActionType.SET_LOADING:
             return {
                 ...state,
                 loading: action.payload.loading,
             };
+        case AuthActionType.AUTH_LOGIN_REJECTED:
+        case AuthActionType.AUTH_VALIDATE_REJECTED:
+        case AuthActionType.AUTH_LOGOUT_REJECTED:
         case AuthActionType.SET_ERROR:
             return {
                 ...state,
