@@ -1,18 +1,20 @@
 import {Container} from "../../../components/containers/index.js";
-import {GenericForm} from "../../../components/forms/index.js";
+import {FormikForm} from "../../../components/forms/index.js";
 import useAddMenuPage from "./add-menu.page.js";
 
 export default function AddMenu() {
-    const {inputs, formError, handleSubmit} = useAddMenuPage();
+    const {inputs, initialValues, validationSchema, handleSubmit, handleCancel} = useAddMenuPage();
 
     return (
         <Container>
             <h1>Add Menu</h1>
-            <GenericForm
+            <FormikForm
                 inputs={inputs}
-                error={formError}
+                initialValues={initialValues}
+                validationSchema={validationSchema}
                 onSubmit={handleSubmit}
                 submitText="ADD MENU"
+                onCancel={handleCancel}
             />
         </Container>
     );

@@ -1,16 +1,17 @@
 import {Container} from "../../../components/containers/index.js";
-import {GenericForm} from "../../../components/forms/index.js";
+import {FormikForm} from "../../../components/forms/index.js";
 import useAddTablePage from "./add-table.page.js";
 
 export default function AddTable() {
-    const {inputs, formError, handleSubmit, onCancel} = useAddTablePage();
+    const {inputs, initialValues, validationSchema, handleSubmit, onCancel} = useAddTablePage();
 
     return (
         <Container>
             <h1>Add Table</h1>
-            <GenericForm
+            <FormikForm
                 inputs={inputs}
-                error={formError}
+                initialValues={initialValues}
+                validationSchema={validationSchema}
                 onSubmit={handleSubmit}
                 submitText="ADD TABLE"
                 onCancel={onCancel}

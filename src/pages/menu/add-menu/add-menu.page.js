@@ -4,6 +4,14 @@ import {useEffect, useState} from "react";
 import {MENU_LIST_PATH} from "../../../shared/constants/routes.js";
 import menuMiddleware from "../../../store/middlewares/menu.middleware.js";
 import services from "../../../services/index.js";
+import {number, object, string} from "yup";
+import {useForm} from "../../../shared/hooks/index.js";
+
+const validationSchema = object({
+    name: string().required("Menu Name is Required"),
+    unitPrice: number().required("Unit price is Required"),
+    menuCategory: number().required()
+});
 
 export default function useAddMenuPage() {
     const [menuCategories, setMenuCategories] = useState(null);
@@ -20,38 +28,33 @@ export default function useAddMenuPage() {
             type: "text",
             name: "name",
             placeholder: "Enter Menu Name",
-            required: true,
         },
         {
             title: "Unit Price",
             type: "number",
             name: "unitPrice",
             placeholder: "Enter Price",
-            required: true,
         },
         {
             title: "Menu Category",
             type: "select",
             name: "menuCategory",
-            options: menuCategories
+            placeholder: "Select Menu Category",
+            options: menuCategories,
         },
     ];
 
-    const [formError, setFormError] = useState({});
+    const [_, formData] = useForm(inputs);
 
     const navigate = useNavigate();
 
     const dispatch = useDispatch();
-    const handleSubmit = (e) => {
-        e.preventDefault();
-
-        const { target } = e;
-
+    const handleSubmit = (values) => {
         dispatch(
             menuMiddleware.addMenu({
-                name: target.name.value,
-                unitPrice: target.unitPrice.value,
-                menuCategoryId: target.menuCategory.value,
+                name: values.name,
+                unitPrice: values.unitPrice,
+                menuCategoryId: values.menuCategory,
             })
         ).then((res) => {
             window.alert(`Success Create new Menu '${res.name}'`);
@@ -59,5 +62,11 @@ export default function useAddMenuPage() {
         });
     };
 
-    return {inputs, formError, handleSubmit};
+    const handleCancel = () => {
+        navigate(MENU_LIST_PATH);
+    };
+
+    const initialValues = {...formData};
+
+    return {inputs, initialValues, validationSchema, handleSubmit, handleCancel};
 }

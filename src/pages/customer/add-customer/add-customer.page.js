@@ -3,6 +3,7 @@ import {useDispatch} from "react-redux";
 import {CUSTOMER_LIST_PATH} from "../../../shared/constants/routes.js";
 import customerMiddleware from "../../../store/middlewares/customer.middleware.js";
 import {useForm} from "../../../shared/hooks/index.js";
+import {object, string} from "yup";
 
 const inputs = [
     {
@@ -36,6 +37,12 @@ const inputs = [
     },
 ];
 
+const validationSchema = object({
+    name: string().required("Customer Name is Required"),
+    email: string().required("Customer E-Mail is Required"),
+    address: string().required("Customer Address is Required"),
+});
+
 export default function useAddCustomerPage() {
 
     const navigate = useNavigate();
@@ -44,12 +51,12 @@ export default function useAddCustomerPage() {
 
     const [addCustomerInputs, addCustomerData, handleChange] = useForm(inputs);
 
-    const handleSubmit = () => {
+    const handleSubmit = (values) => {
         dispatch(
             customerMiddleware.addCustomer({
-                name: addCustomerData.name,
-                email: addCustomerData.email,
-                address: addCustomerData.address,
+                name: values.name,
+                email: values.email,
+                address: values.address,
             })
         ).then((res) => {
             window.alert(`Success Create new Customer '${res.name}'`);
@@ -61,5 +68,5 @@ export default function useAddCustomerPage() {
         navigate(CUSTOMER_LIST_PATH);
     };
 
-    return [addCustomerInputs, addCustomerData, handleChange, handleSubmit, handleCancel];
+    return [addCustomerInputs, addCustomerData, handleChange, handleSubmit, handleCancel, validationSchema];
 }

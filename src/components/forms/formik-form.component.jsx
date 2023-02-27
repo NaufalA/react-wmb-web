@@ -18,6 +18,7 @@ export default function FormikForm(props) {
                             type={input.type}
                             name={input.name}
                             placeholder={input.placeholder}
+                            options={input.options}
                         />
                     ))}
                     {extraContent}

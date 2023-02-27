@@ -22,16 +22,29 @@ export default function FormikField(props) {
         const {options} = props;
 
         return (
-            <Field as={type} id={id} name={name} className={className}>
-                {options.map((i, op) => (
-                    <option key={`${name}-${op.value}`} value={op.value}>{op.label}</option>
-                ))}
+            <Field name={name}>
+                {({field, meta}) => (
+                    <FormGroup title={title} id={id} touched={meta.touched} error={meta.error}>
+                        <select className={className} {...field}>
+                            <option value={undefined}>{placeholder}</option>
+                            {options?.map((op) => (
+                                <option key={`${name}-${op.id}`} value={op.id}>{op.name}</option>
+                            ))}
+                        </select>
+                    </FormGroup>
+                )}
             </Field>
         )
     }
     if (type === "textarea") {
         return (
-            <Field as={type} id={id} name={name} placeholder={placeholder} className={className}/>
+            <Field name={name}>
+                {({field, meta}) => (
+                    <FormGroup title={title} id={id} touched={meta.touched} error={meta.error}>
+                        <textarea placeholder={placeholder} className={className} {...field} />
+                    </FormGroup>
+                )}
+            </Field>
         )
     }
     return (

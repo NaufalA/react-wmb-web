@@ -1,18 +1,18 @@
 import {Container} from "../../../components/containers/index.js";
-import {GenericForm} from "../../../components/forms/index.js";
+import {FormikForm} from "../../../components/forms/index.js";
 import useAddCustomerPage from "./add-customer.page.js";
 
 export default function AddCustomer() {
-    const [inputs, formData, onChange, onSubmit, onCancel] = useAddCustomerPage();
+    const [inputs, formData, _, onSubmit, onCancel, validationSchema] = useAddCustomerPage();
 
     return (
         <Container>
             <h1>Add Customer</h1>
-            <GenericForm
+            <FormikForm
                 inputs={inputs}
-                formData={formData}
+                initialValues={formData}
+                validationSchema={validationSchema}
                 onSubmit={onSubmit}
-                onChange={onChange}
                 submitText="ADD CUSTOMER"
                 onCancel={onCancel}
             />
