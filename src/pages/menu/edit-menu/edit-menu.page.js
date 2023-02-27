@@ -5,6 +5,13 @@ import {MENU_LIST_PATH} from "../../../shared/constants/routes.js";
 import menuMiddleware from "../../../store/middlewares/menu.middleware.js";
 import services from "../../../services/index.js";
 import {useForm} from "../../../shared/hooks/index.js";
+import {number, object, string} from "yup";
+
+const validationSchema = object({
+    name: string().required("Menu Name is Required"),
+    unitPrice: number().required("Unit price is Required"),
+    menuCategory: number().required()
+});
 
 export default function useEditMenuPage() {
 
@@ -28,14 +35,12 @@ export default function useEditMenuPage() {
             type: "text",
             name: "name",
             placeholder: "Enter Menu Name",
-            required: true,
         },
         {
             title: "Unit Price",
             type: "number",
             name: "unitPrice",
             placeholder: "Enter Price",
-            required: true,
         },
         {
             title: "Menu Category",
@@ -71,14 +76,13 @@ export default function useEditMenuPage() {
         }
     }, [dispatch, id, currentMenu]);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleSubmit = (values) => {
 
         const updatedMenu = {
             ...currentMenu,
-            name: menuForm.name,
-            unitPrice: menuForm.unitPrice,
-            menuCategory: menuCategories.find(c => c.id === Number(menuForm.menuCategory))
+            name: values.name,
+            unitPrice: values.unitPrice,
+            menuCategory: menuCategories.find(c => c.id === Number(values.menuCategory))
         };
         dispatch(
             menuMiddleware.updateMenu(currentMenu.id, updatedMenu)
@@ -92,5 +96,5 @@ export default function useEditMenuPage() {
         navigate(MENU_LIST_PATH);
     }
 
-    return {formInputs, handleChange, handleSubmit, handleCancel};
+    return {formInputs, initialValues: menuForm, validationSchema, handleChange, handleSubmit, handleCancel};
 }

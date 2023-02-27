@@ -13,7 +13,7 @@ function FormGroup(props) {
 }
 
 export default function FormikField(props) {
-    const {title, type, id, name, placeholder, error} = props;
+    const {title, type, id, name, placeholder, error, value} = props;
 
     const borderClass = error ? "border-danger" : "border-accent";
     const className = `p-2 shadow-md border rounded-md bg-background ${borderClass} ${props.className}`
@@ -22,11 +22,11 @@ export default function FormikField(props) {
         const {options} = props;
 
         return (
-            <Field name={name}>
+            <Field name={name} value={value}>
                 {({field, meta}) => (
                     <FormGroup title={title} id={id} touched={meta.touched} error={meta.error}>
                         <select className={className} {...field}>
-                            <option value={undefined}>{placeholder}</option>
+                            <option value={undefined}>{placeholder || `Select ${title}`}</option>
                             {options?.map((op) => (
                                 <option key={`${name}-${op.id}`} value={op.id}>{op.name}</option>
                             ))}
@@ -38,7 +38,7 @@ export default function FormikField(props) {
     }
     if (type === "textarea") {
         return (
-            <Field name={name}>
+            <Field name={name} value={value}>
                 {({field, meta}) => (
                     <FormGroup title={title} id={id} touched={meta.touched} error={meta.error}>
                         <textarea placeholder={placeholder} className={className} {...field} />
@@ -48,7 +48,7 @@ export default function FormikField(props) {
         )
     }
     return (
-        <Field name={name}>
+        <Field name={name} value={value}>
             {({field, meta}) => (
                 <FormGroup title={title} id={id} touched={meta.touched} error={meta.error}>
                     <input type={type} placeholder={placeholder} className={className} {...field} />

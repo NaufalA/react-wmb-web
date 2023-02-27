@@ -1,8 +1,15 @@
 import {useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {TABLE_LIST_PATH} from "../../../shared/constants/routes.js";
 import tableMiddleware from "../../../store/middlewares/table.middleware.js";
+import {boolean, object, string} from "yup";
+import {useForm} from "../../../shared/hooks/index.js";
+
+const validationSchema = object({
+    name: string().required(),
+    availability: boolean().required()
+});
 
 export default function useEditTablePage() {
 
@@ -16,44 +23,12 @@ export default function useEditTablePage() {
         (state) => state.table.currentTable
     );
 
-    const [formData, setFormData] = useState({
-        name: "",
-        availability: "",
-    });
-
-    useEffect(() => {
-        if (currentTable && currentTable.id === Number(id)) {
-            setFormData({
-                name: currentTable.name,
-                availability: currentTable.availability,
-            });
-        } else {
-            dispatch(tableMiddleware.getTable(id));
-        }
-    }, [dispatch, id, currentTable]);
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        for (const { name: inputName } of inputs) {
-            if (name === inputName) {
-                setFormData((oldData) => ({
-                    ...oldData,
-                    [name]: value,
-                }));
-                break;
-            }
-        }
-    }
-
     const inputs = [
         {
             title: "Name",
             type: "text",
             name: "name",
             placeholder: "Enter Table Name",
-            value: formData.name,
-            onChange: handleChange,
-            required: true,
         },
         {
             title: "Availability",
@@ -69,27 +44,43 @@ export default function useEditTablePage() {
                     name: "Unavailable"
                 },
             ],
-            value: formData.availability,
-            onChange: handleChange,
         },
     ];
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const [formInputs, formData, _, refreshForm] = useForm(inputs, {
+        name: currentTable?.name,
+        availability: currentTable?.availability
+    });
 
-        const { target } = e;
+    useEffect(() => {
+        if (currentTable && currentTable.id === Number(id)) {
+            refreshForm({
+                name: currentTable.name,
+                availability: currentTable.availability,
+            });
+        } else {
+            dispatch(tableMiddleware.getTable(id));
+        }
+    }, [dispatch, id, currentTable]);
+
+    const handleSubmit = (values) => {
+        const updatedTable = {
+            ...currentTable,
+            name: values.name,
+            availability: values.availability === "true",
+        };
 
         dispatch(
-            tableMiddleware.updateTable(currentTable.id, {
-                ...currentTable,
-                name: target.name.value,
-                availability: target.availability.value === "true",
-            })
+            tableMiddleware.updateTable(currentTable.id, updatedTable)
         ).then((res) => {
             window.alert(`Success Update Table '${res.name}'`);
             navigate(TABLE_LIST_PATH);
         });
     };
 
-    return { navigate, inputs, handleSubmit };
+    const handleCancel = () => {
+        navigate(TABLE_LIST_PATH);
+    }
+
+    return { inputs: formInputs, initialValues: formData, validationSchema, handleSubmit, handleCancel };
 }

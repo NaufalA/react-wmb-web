@@ -4,6 +4,7 @@ import {useEffect} from "react";
 import {CUSTOMER_LIST_PATH} from "../../../shared/constants/routes.js";
 import customerMiddleware from "../../../store/middlewares/customer.middleware.js";
 import {useForm} from "../../../shared/hooks/index.js";
+import {object, string} from "yup";
 
 const inputs = [
     {
@@ -30,6 +31,12 @@ const inputs = [
     },
 ];
 
+const validationSchema = object({
+    name: string().required("Customer Name is Required"),
+    email: string().required("Customer E-Mail is Required"),
+    address: string().required("Customer Address is Required"),
+});
+
 export default function useEditCustomerPage() {
 
     const {id} = useParams();
@@ -42,7 +49,7 @@ export default function useEditCustomerPage() {
         (state) => state.customer.currentCustomer
     );
 
-    const [formInputs, formData, handleChange, refreshForm] = useForm(
+    const [formInputs, formData, _, refreshForm] = useForm(
         inputs,
         currentCustomer
     );
@@ -55,14 +62,13 @@ export default function useEditCustomerPage() {
         }
     }, [dispatch, id, currentCustomer]);
 
-    const handleSubmit = () => {
+    const handleSubmit = (values) => {
         const updatedCustomer = {
             ...currentCustomer,
-            name: formData.name,
-            email: formData.email,
-            address: formData.address,
+            name: values.name,
+            email: values.email,
+            address: values.address,
         };
-        console.log(updatedCustomer)
 
         dispatch(
             customerMiddleware.updateCustomer(currentCustomer.id, updatedCustomer)
@@ -76,5 +82,5 @@ export default function useEditCustomerPage() {
         navigate(CUSTOMER_LIST_PATH);
     };
 
-    return [formInputs, formData, handleChange, handleSubmit, handleCancel];
+    return [formInputs, formData, validationSchema, handleSubmit, handleCancel];
 }
