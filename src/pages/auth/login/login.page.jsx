@@ -1,12 +1,12 @@
 import {Container} from "../../../components/containers/index.js";
 import useLoginPage from "./login.page.js";
-import {GenericForm} from "../../../components/forms/index.js";
 import {useSelector} from "react-redux";
+import {FormikForm} from "../../../components/forms/index.js";
 
 export default function Login() {
     const authError = useSelector(state => state.auth.error);
 
-    const [inputs, data, handleChange, handleSubmit] = useLoginPage();
+    const [inputs, data, handleChange, handleSubmit, initialValues, validationSchema] = useLoginPage();
 
     return (
         <Container className="grid place-content-center">
@@ -14,14 +14,14 @@ export default function Login() {
                 <h1 className="text-center font-bold">Login</h1>
                 {authError && (
                     <p className="p-2 rounded-sm border-2 border-danger text-danger text-center">
-                        {authError.reason}
+                        {authError.reason || authError.message}
                     </p>
                 )
                 }
-                <GenericForm
+                <FormikForm
                     inputs={inputs}
-                    formData={data}
-                    onChange={handleChange}
+                    initialValues={initialValues}
+                    validationSchema={validationSchema}
                     onSubmit={handleSubmit}
                     submitText="LOGIN"
                 />

@@ -1,11 +1,12 @@
 import {authMiddleware} from "../../../store/middlewares/index.js";
 import {useDispatch} from "react-redux";
 import {useForm} from "../../../shared/hooks/index.js";
+import {object, string} from "yup";
 
 const inputs = [
     {
         title: "E-mail",
-        type: "email",
+        type: "text",
         name: "email",
         placeholder: "Enter E-mail",
         validation: {
@@ -28,19 +29,32 @@ const inputs = [
     },
 ];
 
+const validationSchema = object({
+    email: string()
+        .email()
+        .required("E-Mail is Required"),
+    password: string()
+        .required("Password is Required")
+        .min(6, "Password must be at least 6 characters long")
+})
+
 export default function useLoginPage() {
 
     const [loginInputs, loginData, handleChange] = useForm(inputs);
 
     const dispatch = useDispatch();
-    const handleSubmit = async () => {
+    const handleSubmit = async (values) => {
         const dto = {
-            email: loginData.email,
-            password: loginData.password
+            email: values.email,
+            password: values.password
         }
 
         dispatch(authMiddleware.login(dto));
     }
 
-    return [loginInputs, loginData, handleChange, handleSubmit];
+    const initialValues = {
+        ...loginData
+    }
+
+    return [loginInputs, loginData, handleChange, handleSubmit, initialValues, validationSchema];
 }
