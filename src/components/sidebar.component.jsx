@@ -1,13 +1,14 @@
-import {useDispatch, useSelector} from "react-redux";
-import {authMiddleware} from "../store/middlewares/index.js";
 import {Button} from "./buttons/index.js";
-import {NavLink} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import {
+    AUTH_LOGIN_PATH,
     CUSTOMER_LIST_PATH,
     MENU_LIST_PATH,
     TABLE_LIST_PATH,
     TRANSACTION_LIST_PATH
 } from "../shared/constants/routes.js";
+import {useQuery, useQueryClient} from "react-query";
+import services from "../services/index.js";
 
 const menu = [
     {
@@ -29,14 +30,19 @@ const menu = [
 ]
 
 export default function Sidebar() {
-    const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
+    const queryCache = useQueryClient().getQueryCache();
+    const user = queryCache.find("validate-token").state.data?.sub;
 
-    const dispatch = useDispatch();
+    const logout = useQuery("logout", services.auth.logout, {enabled: false});
+    const navigate = useNavigate();
     const handleLogout = () => {
-        dispatch(authMiddleware.logout());
+        logout.refetch().then(() => {
+            queryCache.clear();
+            navigate(AUTH_LOGIN_PATH);
+        });
     }
 
-    if (!isLoggedIn) return "";
+    if (!user) return "";
 
     return (
         <nav className="bg-accent shadow-lg p-4 flex flex-col gap-6">

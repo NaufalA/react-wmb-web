@@ -1,7 +1,7 @@
-import {authMiddleware} from "../../../store/middlewares/index.js";
-import {useDispatch} from "react-redux";
 import {useForm} from "../../../shared/hooks/index.js";
 import {object, string} from "yup";
+import {useMutation, useQueryClient} from "react-query";
+import services from "../../../services/index.js";
 
 const inputs = [
     {
@@ -42,19 +42,26 @@ export default function useLoginPage() {
 
     const [loginInputs, loginData, handleChange] = useForm(inputs);
 
-    const dispatch = useDispatch();
+    const queryClient = useQueryClient();
+    const login = useMutation(services.auth.login, {
+        onSuccess: data => {
+            console.log(data);
+            queryClient.invalidateQueries("validate-token");
+        }
+    })
+
     const handleSubmit = async (values) => {
         const dto = {
             email: values.email,
             password: values.password
         }
 
-        dispatch(authMiddleware.login(dto));
+        login.mutate(dto);
     }
 
     const initialValues = {
         ...loginData
     }
 
-    return [loginInputs, loginData, handleChange, handleSubmit, initialValues, validationSchema];
+    return [loginInputs, loginData, handleChange, handleSubmit, initialValues, validationSchema, login.error];
 }

@@ -1,12 +1,9 @@
 import {Container} from "../../../components/containers/index.js";
 import useLoginPage from "./login.page.js";
-import {useSelector} from "react-redux";
 import {FormikForm} from "../../../components/forms/index.js";
 
 export default function Login() {
-    const authError = useSelector(state => state.auth.error);
-
-    const [inputs, data, handleChange, handleSubmit, initialValues, validationSchema] = useLoginPage();
+    const [inputs, data, handleChange, handleSubmit, initialValues, validationSchema, authError] = useLoginPage();
 
     return (
         <Container className="grid place-content-center">
