@@ -2,8 +2,15 @@ import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {useEffect, useState} from "react";
 import {TRANSACTION_LIST_PATH} from "../../../shared/constants/routes.js";
-import transactionMiddleware from "../../../store/middlewares/transaction.middleware.js";
 import services from "../../../services/index.js";
+import {useForm} from "../../../shared/hooks/index.js";
+import {date, number, object, string} from "yup";
+
+const validationSchema = object({
+    transactionDate: date().required(),
+    customerName: string().required(),
+    tableId: number().required()
+});
 
 export default function useAddTransactionPage() {
     const [tables, setTables] = useState(null);
@@ -22,14 +29,12 @@ export default function useAddTransactionPage() {
             type: "datetime-local",
             name: "transactionDate",
             placeholder: "Enter Transaction Date",
-            required: true,
         },
         {
             title: "Customer Name",
             type: "text",
             name: "customerName",
             placeholder: "Enter Customer Name",
-            required: true,
         },
         {
             title: "Table",
@@ -39,17 +44,28 @@ export default function useAddTransactionPage() {
                 id: transaction.id,
                 name: transaction.name,
             })),
-            required: true,
         },
     ];
+
+    const [formInputs, formData] = useForm(inputs);
 
     const [detailList, setDetailList] = useState([]);
 
     const addDetailItem = (detail) => {
-        setDetailList((oldState) => [
-            ...oldState,
-            detail
-        ]);
+        const existingIdx = detailList.findIndex(d => d.productId === detail.productId);
+        if (existingIdx !== -1) {
+            const updatedDetails = [...detailList];
+            updatedDetails[existingIdx] = {
+                ...updatedDetails[existingIdx],
+                quantity: Number(updatedDetails[existingIdx].quantity) + Number(detail.quantity),
+            };
+            setDetailList(updatedDetails);
+        } else {
+            setDetailList((oldState) => [
+                ...oldState,
+                detail
+            ]);
+        }
     }
 
     const removeDetailItem = (index) => {
@@ -62,18 +78,15 @@ export default function useAddTransactionPage() {
     const navigate = useNavigate();
 
     const dispatch = useDispatch();
-    const handleSubmit = (e) => {
-        e.preventDefault();
-
-        const {target} = e;
+    const handleSubmit = (values) => {
 
         const dto = {
-            transactionDate: new Date(target.transactionDate.value).toISOString(),
-            customerName: target.customerName.value,
-            tableId: Number(target.tableId.value),
+            transactionDate: new Date(values.transactionDate).toISOString(),
+            customerName: values.customerName,
+            tableId: Number(values.tableId),
             detailList: detailList.map(detail => {
-                const { quantity, priceId } = detail;
-                return { quantity, menuPriceId: priceId };
+                const {quantity, priceId} = detail;
+                return {quantity, menuPriceId: priceId};
             })
         };
 
@@ -85,9 +98,18 @@ export default function useAddTransactionPage() {
         });
     };
 
-    const onCancel = () => {
+    const handleCancel = () => {
         navigate(TRANSACTION_LIST_PATH);
     };
 
-    return {inputs, detailList, addDetailItem, removeDetailItem, handleSubmit, onCancel};
+    return {
+        inputs: formInputs,
+        initialValues: formData,
+        validationSchema,
+        detailList,
+        addDetailItem,
+        removeDetailItem,
+        handleSubmit,
+        handleCancel
+    };
 }
