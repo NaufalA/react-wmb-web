@@ -44,7 +44,7 @@ export default function tableService(http) {
         }
     };
 
-    const updateTable = async (id, updatedTable) => {
+    const updateTable = async ({id, updatedTable}) => {
         try {
             const res = await http.put(`${baseURI}/${id}`, updatedTable);
             return res.data.data;

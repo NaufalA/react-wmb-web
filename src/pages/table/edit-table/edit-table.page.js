@@ -1,10 +1,10 @@
 import {useNavigate, useParams} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
 import {TABLE_LIST_PATH} from "../../../shared/constants/routes.js";
-import tableMiddleware from "../../../store/middlewares/table.middleware.js";
 import {boolean, object, string} from "yup";
 import {useForm} from "../../../shared/hooks/index.js";
+import {useMutation, useQuery} from "react-query";
+import services from "../../../services/index.js";
 
 const validationSchema = object({
     name: string().required(),
@@ -13,15 +13,12 @@ const validationSchema = object({
 
 export default function useEditTablePage() {
 
-    const { id } = useParams();
+    const {id} = useParams();
 
     const navigate = useNavigate();
 
-    const dispatch = useDispatch();
-
-    const currentTable = useSelector(
-        (state) => state.table.currentTable
-    );
+    const getTableQuery = useQuery(["get-table", id], () => services.table.getTable(id));
+    const currentTable = getTableQuery.data;
 
     const inputs = [
         {
@@ -52,17 +49,15 @@ export default function useEditTablePage() {
         availability: currentTable?.availability
     });
 
-    useEffect(() => {
-        if (currentTable && currentTable.id === Number(id)) {
-            refreshForm({
-                name: currentTable.name,
-                availability: currentTable.availability,
-            });
-        } else {
-            dispatch(tableMiddleware.getTable(id));
-        }
-    }, [dispatch, id, currentTable]);
 
+    useEffect(() => {
+        refreshForm({
+            name: currentTable?.name  || "",
+            availability: currentTable?.availability || true,
+        });
+    }, [currentTable]);
+
+    const updateTableMutation = useMutation(services.table.updateTable);
     const handleSubmit = (values) => {
         const updatedTable = {
             ...currentTable,
@@ -70,11 +65,11 @@ export default function useEditTablePage() {
             availability: values.availability === "true",
         };
 
-        dispatch(
-            tableMiddleware.updateTable(currentTable.id, updatedTable)
-        ).then((res) => {
-            window.alert(`Success Update Table '${res.name}'`);
-            navigate(TABLE_LIST_PATH);
+        updateTableMutation.mutate({id, updatedTable}, {
+            onSuccess: (res) => {
+                window.alert(`Success Update Table '${res.name}'`);
+                navigate(TABLE_LIST_PATH);
+            }
         });
     };
 
@@ -82,5 +77,5 @@ export default function useEditTablePage() {
         navigate(TABLE_LIST_PATH);
     }
 
-    return { inputs: formInputs, initialValues: formData, validationSchema, handleSubmit, handleCancel };
+    return {inputs: formInputs, initialValues: formData, validationSchema, handleSubmit, handleCancel};
 }
