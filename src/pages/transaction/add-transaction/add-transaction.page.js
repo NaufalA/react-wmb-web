@@ -1,10 +1,10 @@
 import {useNavigate} from "react-router-dom";
-import {useDispatch} from "react-redux";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {TRANSACTION_LIST_PATH} from "../../../shared/constants/routes.js";
-import services from "../../../services/index.js";
 import {useForm} from "../../../shared/hooks/index.js";
 import {date, number, object, string} from "yup";
+import {useMutation, useQuery} from "react-query";
+import services from "../../../services/index.js";
 
 const validationSchema = object({
     transactionDate: date().required(),
@@ -13,15 +13,11 @@ const validationSchema = object({
 });
 
 export default function useAddTransactionPage() {
-    const [tables, setTables] = useState(null);
+    const listCustomerQuery = useQuery(["list-customer", 0, 0], () => services.customer.listCustomer(0, 0));
+    const customers = listCustomerQuery?.data?.data || [];
 
-    useEffect(() => {
-        if (!tables) {
-            services.table.listTable(0, 0).then((res) => {
-                setTables(res.data);
-            })
-        }
-    }, []);
+    const listTableQuery = useQuery(["list-table", 0, 0], () => services.table.listTable(0, 0));
+    const tables = listTableQuery?.data?.data || [];
 
     const inputs = [
         {
@@ -35,6 +31,7 @@ export default function useAddTransactionPage() {
             type: "text",
             name: "customerName",
             placeholder: "Enter Customer Name",
+            dataList: customers.map((c) => ({value: c.name}))
         },
         {
             title: "Table",
@@ -77,9 +74,8 @@ export default function useAddTransactionPage() {
 
     const navigate = useNavigate();
 
-    const dispatch = useDispatch();
+    const addTransactionMutation = useMutation(services.transaction.addTransaction);
     const handleSubmit = (values) => {
-
         const dto = {
             transactionDate: new Date(values.transactionDate).toISOString(),
             customerName: values.customerName,
@@ -90,11 +86,11 @@ export default function useAddTransactionPage() {
             })
         };
 
-        dispatch(
-            transactionMiddleware.addTransaction(dto)
-        ).then((res) => {
-            window.alert(`Success Create new Transaction '${res.id}'`);
-            navigate(TRANSACTION_LIST_PATH);
+        addTransactionMutation.mutate(dto, {
+            onSuccess: (res) => {
+                window.alert(`Success Create new Transaction '${res.id}'`);
+                navigate(TRANSACTION_LIST_PATH);
+            }
         });
     };
 

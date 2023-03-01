@@ -1,10 +1,9 @@
 import {useNavigate} from "react-router-dom";
-import {useEffect, useState} from "react";
 import {MENU_LIST_PATH} from "../../../shared/constants/routes.js";
 import services from "../../../services/index.js";
 import {number, object, string} from "yup";
 import {useForm} from "../../../shared/hooks/index.js";
-import {useMutation} from "react-query";
+import {useMutation, useQuery} from "react-query";
 
 const validationSchema = object({
     name: string().required("Menu Name is Required"),
@@ -13,13 +12,10 @@ const validationSchema = object({
 });
 
 export default function useAddMenuPage() {
-    const [menuCategories, setMenuCategories] = useState(null);
-
-    useEffect(() => {
-        services.menu.listCategory().then(res => {
-            setMenuCategories(res);
-        });
-    }, []);
+    const {data: menuCategories} = useQuery("list-category", services.menu.listCategory, {
+        initialData: [],
+        refetchOnMount: true
+    });
 
     const inputs = [
         {

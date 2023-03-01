@@ -1,23 +1,12 @@
 import {useParams} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
-import {useEffect} from "react";
-import {transactionMiddleware} from "../../../store/middlewares/index.js";
+import {useQuery} from "react-query";
+import services from "../../../services/index.js";
 
 export default function useTransactionDetailPage() {
     const { id } = useParams();
 
-    const transaction = useSelector(
-        (state) => state.transaction.currentTransaction
-    );
+    const getTransactionQuery = useQuery(["get-transaction", id], () => services.transaction.getTransaction(id));
+    const transaction = getTransactionQuery.data;
 
-    const dispatch = useDispatch();
-    useEffect(() => {
-        if (!transaction || transaction.id !== Number(id)) {
-            dispatch(transactionMiddleware.getTransaction(id));
-        }
-    }, [dispatch, id, transaction]);
-
-    return {
-        transaction
-    }
+    return {transaction}
 }

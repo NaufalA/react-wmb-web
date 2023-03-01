@@ -18,12 +18,10 @@ export default function useEditMenuPage() {
 
     const navigate = useNavigate();
 
-    const listCategoriesQuery = useQuery("list-category", services.menu.listCategory, {
+    const {data: menuCategories} = useQuery("list-category", services.menu.listCategory, {
         initialData: [],
         refetchOnMount: true
     });
-
-    const menuCategories = listCategoriesQuery.data;
 
 
     const inputs = [

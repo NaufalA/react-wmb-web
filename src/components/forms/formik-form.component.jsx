@@ -29,12 +29,13 @@ export default function FormikForm(props) {
                     {inputs.map((input, i) => (
                         <FormikField
                             key={`form-input-${i}`}
+                            value={props.values[input.name]}
                             title={input.title}
                             type={input.type}
                             name={input.name}
                             placeholder={input.placeholder}
                             options={input.options}
-                            value={props.values[input.name]}
+                            dataList={input.dataList}
                         />
                     ))}
                     {extraContent}

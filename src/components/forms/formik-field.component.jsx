@@ -47,11 +47,20 @@ export default function FormikField(props) {
             </Field>
         )
     }
+
+    const {dataList} = props;
+    const dataListId = `${name}-datalist}`;
+
     return (
         <Field name={name} value={value}>
             {({field, meta}) => (
                 <FormGroup title={title} id={id} touched={meta.touched} error={meta.error}>
-                    <input type={type} placeholder={placeholder} className={className} {...field} />
+                    <input type={type} placeholder={placeholder} className={className} list={dataListId} {...field} />
+                    {dataList && (
+                        <datalist id={dataListId}>
+                            {dataList.map((d) => (<option value={d.value}/>))}
+                        </datalist>
+                    )}
                 </FormGroup>
             )}
         </Field>

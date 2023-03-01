@@ -2,29 +2,26 @@ import {Button} from "../../../components/buttons/index.js";
 import {useEffect, useState} from "react";
 import services from "../../../services/index.js";
 import {FormInput} from "../../../components/forms/index.js";
+import {useQuery} from "react-query";
 
 export default function MenuSelector(props) {
     const {onAddItem} = props;
 
     const [categoryId, setCategoryId] = useState(1);
-    const [menuData, setMenuData] = useState(null);
-    const [menuCategories, setMenuCategories] = useState(null);
-    const [isLoading, setLoading] = useState(false);
+
+    const {data: menuCategories, isLoading} = useQuery("list-category", services.menu.listCategory, {
+        initialData: [],
+        refetchOnMount: true
+    });
+
+    const listMenuByCategoryQuery = useQuery(
+        ["list-menu-by-category", categoryId],
+        () => services.menu.listMenuByCategory(categoryId)
+    );
+    const menuData = listMenuByCategoryQuery?.data?.data || [];
 
     useEffect(() => {
-        services.menu.listCategory().then(res => {
-            setMenuCategories(res);
-        });
-    }, []);
-
-    useEffect(() => {
-        setLoading(true);
-        services.menu.listMenuByCategory(categoryId).then((res) => {
-            setMenuData(res.data);
-
-        }).finally(() => {
-            setLoading(false)
-        });
+        listMenuByCategoryQuery.refetch();
     }, [categoryId]);
 
     const [selectedMenu, setSelectedMenu] = useState(undefined);
