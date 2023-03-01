@@ -3,7 +3,7 @@ export default function ListGroup(props) {
 
     return (
         <div
-            className={`flex flex-col border-2 border-accent shadow-md ${className || ""}`}
+            className={`overflow-y-auto flex flex-col border-2 border-accent shadow-md ${className || ""}`}
             {...others}
         >
             {children}

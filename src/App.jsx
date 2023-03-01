@@ -29,7 +29,7 @@ function App() {
     }, [validateToken.data, user]);
 
     return (
-        <div className="min-h-screen bg-background text-foreground flex">
+        <div className="min-h-screen max-h-screen bg-background text-foreground flex">
             <Sidebar/>
             <Routing/>
         </div>

@@ -1,95 +1,85 @@
-import {useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
+import {useState} from "react";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import {Container} from "../containers/index.js";
 import {Button, PaginationControl} from "../buttons/index.js";
+import {useMutation, useQuery} from "react-query";
 
 export default function withList(ListComponent, options) {
     return () => {
-        const {getDataAction, dataSelector, loadingSelector, paginated, label, addPath} =
+        const {listApi, deleteApi, listQueryKey, paginated, label, addPath} =
             options;
 
         const navigate = useNavigate();
         const [searchParams, setSearchParams] = useSearchParams();
 
-        const isLoading = useSelector(loadingSelector);
-
-        const pageData = useSelector((state) => dataSelector(state));
-        const {
-            data,
-            count,
-            totalPages,
-            totalCount,
-            page: statePage,
-            size: stateSize,
-        } = pageData;
         const [page, setPage] = useState(
-            !paginated ? 0 : searchParams.get("page") ? Number(searchParams.get("page")) : statePage
+            !paginated ? 0 : searchParams.get("page") ? Number(searchParams.get("page")) : 0
         );
         const [size, setSize] = useState(
-            !paginated ? 0 : searchParams.get("size") ? Number(searchParams.get("size")) : stateSize
+            !paginated ? 0 : searchParams.get("size") ? Number(searchParams.get("size")) : 10
         );
+
+        const listQuery = useQuery([listQueryKey, page, size], () =>listApi(page, size), {
+            onSettled: () => {
+                setSearchParams({page: page.toString(), size: size.toString()});
+            },
+            keepPreviousData: true
+        });
+
+        const list = listQuery.data;
 
         const changePage = (newPage) => {
             setPage(newPage);
-            setShouldFetch(true);
         };
 
         const changeSize = (newSize) => {
             setSize(newSize);
-            setShouldFetch(true);
         };
 
-        const [shouldFetch, setShouldFetch] = useState(true);
-
-        const dispatch = useDispatch();
-        useEffect(() => {
-            if (shouldFetch) {
-                setShouldFetch(false);
-                setSearchParams({page, size});
-                dispatch(getDataAction(page, size));
+        const deleteMutation = useMutation(deleteApi);
+        const onDelete = (item, confirmMessage, successMessage) => {
+            if (window.confirm(confirmMessage)) {
+                deleteMutation.mutate(item.id, {
+                    onSuccess: () => {
+                        window.alert(successMessage);
+                        listQuery.refetch();
+                    }
+                });
             }
-        }, [
-            setSearchParams,
-            dispatch,
-            getDataAction,
-            dataSelector,
-            page,
-            size,
-            shouldFetch,
-        ]);
+        }
+
         return (
             <Container className="flex flex-col items-stretch gap-4">
                 <h1>{label} List</h1>
                 <Button
                     onClick={() => navigate(addPath)}
-                    disabled={isLoading}
+                    disabled={listQuery.isLoading}
                     className="self-start bg-success"
                 >
                     Add {label}
                 </Button>
-                {data.length === 0 ? (
+                {list?.data.length === 0 ? (
                     <h1>Data Is Empty</h1>
                 ) : (
                     <>
                         <ListComponent
-                            data={data}
+                            data={list?.data || []}
                             navigate={navigate}
-                            onDelete={() => setShouldFetch(true)}
+                            onDelete={onDelete}
                         />
-                        {paginated && (
-                            <PaginationControl
-                                page={page}
-                                size={size}
-                                count={count}
-                                totalPages={totalPages}
-                                totalCount={totalCount}
-                                onChangePage={changePage}
-                                onChangeSize={changeSize}
-                                disabled={isLoading}
-                            />
-                        )}
                     </>
+                )}
+                {paginated && (
+                    <PaginationControl
+                        page={page}
+                        size={size}
+                        count={list?.count}
+                        totalPages={list?.totalPages}
+                        totalCount={list?.totalCount}
+                        onChangePage={changePage}
+                        onChangeSize={changeSize}
+                        disabled={listQuery.isLoading}
+                    />
                 )}
             </Container>
         );
