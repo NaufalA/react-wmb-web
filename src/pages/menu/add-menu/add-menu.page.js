@@ -1,11 +1,10 @@
 import {useNavigate} from "react-router-dom";
-import {useDispatch} from "react-redux";
 import {useEffect, useState} from "react";
 import {MENU_LIST_PATH} from "../../../shared/constants/routes.js";
-import menuMiddleware from "../../../store/middlewares/menu.middleware.js";
 import services from "../../../services/index.js";
 import {number, object, string} from "yup";
 import {useForm} from "../../../shared/hooks/index.js";
+import {useMutation} from "react-query";
 
 const validationSchema = object({
     name: string().required("Menu Name is Required"),
@@ -48,17 +47,19 @@ export default function useAddMenuPage() {
 
     const navigate = useNavigate();
 
-    const dispatch = useDispatch();
+    const addMenuMutation = useMutation(services.menu.addMenu);
     const handleSubmit = (values) => {
-        dispatch(
-            menuMiddleware.addMenu({
-                name: values.name,
-                unitPrice: values.unitPrice,
-                menuCategoryId: values.menuCategory,
-            })
-        ).then((res) => {
-            window.alert(`Success Create new Menu '${res.name}'`);
-            navigate(MENU_LIST_PATH);
+        const dto = {
+            name: values.name,
+            unitPrice: values.unitPrice,
+            menuCategoryId: values.menuCategory,
+        };
+
+        addMenuMutation.mutate(dto, {
+            onSuccess: (res) => {
+                window.alert(`Success Create new Menu '${res.name}'`);
+                navigate(MENU_LIST_PATH);
+            }
         });
     };
 

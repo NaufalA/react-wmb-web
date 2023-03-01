@@ -58,7 +58,7 @@ export default function menuService(http) {
         }
     };
 
-    const updateMenu = async (id, updatedMenu) => {
+    const updateMenu = async ({id, updatedMenu}) => {
         try {
             const res = await http.put(`${baseURI}/${id}`, updatedMenu);
             return res.data.data;

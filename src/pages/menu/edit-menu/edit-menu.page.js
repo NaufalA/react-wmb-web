@@ -1,11 +1,10 @@
 import {useNavigate, useParams} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {MENU_LIST_PATH} from "../../../shared/constants/routes.js";
-import menuMiddleware from "../../../store/middlewares/menu.middleware.js";
 import services from "../../../services/index.js";
 import {useForm} from "../../../shared/hooks/index.js";
 import {number, object, string} from "yup";
+import {useMutation, useQuery} from "react-query";
 
 const validationSchema = object({
     name: string().required("Menu Name is Required"),
@@ -19,15 +18,13 @@ export default function useEditMenuPage() {
 
     const navigate = useNavigate();
 
-    const dispatch = useDispatch();
+    const listCategoriesQuery = useQuery("list-category", services.menu.listCategory, {
+        initialData: [],
+        refetchOnMount: true
+    });
 
-    const [menuCategories, setMenuCategories] = useState(null);
+    const menuCategories = listCategoriesQuery.data;
 
-    useEffect(() => {
-        services.menu.listCategory().then(res => {
-            setMenuCategories(res);
-        });
-    }, []);
 
     const inputs = [
         {
@@ -50,9 +47,8 @@ export default function useEditMenuPage() {
         },
     ];
 
-    const currentMenu = useSelector(
-        (state) => state.menu.currentMenu
-    );
+    const getMenuQuery = useQuery(["get-menu", id], () => services.menu.getMenu(id));
+    const currentMenu = getMenuQuery.data;
 
     const [formInputs, menuForm, handleChange, refreshForm] = useForm(
         inputs,
@@ -64,17 +60,14 @@ export default function useEditMenuPage() {
     );
 
     useEffect(() => {
-        if (!currentMenu || currentMenu.id !== Number(id)) {
-            dispatch(menuMiddleware.getMenu(id));
-        } else {
-            refreshForm({
-                    name: currentMenu?.name,
-                    unitPrice: currentMenu?.unitPrice,
-                    menuCategory: currentMenu?.menuCategory?.id
-                }
-            )
-        }
-    }, [dispatch, id, currentMenu]);
+        refreshForm({
+            name: currentMenu?.name,
+            unitPrice: currentMenu?.unitPrice,
+            menuCategory: currentMenu?.menuCategory?.id
+        });
+    }, [currentMenu]);
+
+    const updateMenuMutation = useMutation(services.menu.updateMenu);
 
     const handleSubmit = (values) => {
 
@@ -84,11 +77,11 @@ export default function useEditMenuPage() {
             unitPrice: values.unitPrice,
             menuCategory: menuCategories.find(c => c.id === Number(values.menuCategory))
         };
-        dispatch(
-            menuMiddleware.updateMenu(currentMenu.id, updatedMenu)
-        ).then((res) => {
-            window.alert(`Success Update Menu '${res.name}'`);
-            navigate(MENU_LIST_PATH);
+        updateMenuMutation.mutate({id, updatedMenu}, {
+            onSuccess: (res) => {
+                window.alert(`Success Update Menu '${res.name}'`);
+                navigate(MENU_LIST_PATH);
+            }
         });
     };
 
