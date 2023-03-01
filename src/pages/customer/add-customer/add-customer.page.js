@@ -1,9 +1,9 @@
 import {useNavigate} from "react-router-dom";
-import {useDispatch} from "react-redux";
 import {CUSTOMER_LIST_PATH} from "../../../shared/constants/routes.js";
-import customerMiddleware from "../../../store/middlewares/customer.middleware.js";
 import {useForm} from "../../../shared/hooks/index.js";
 import {object, string} from "yup";
+import {useMutation} from "react-query";
+import services from "../../../services/index.js";
 
 const inputs = [
     {
@@ -47,20 +47,21 @@ export default function useAddCustomerPage() {
 
     const navigate = useNavigate();
 
-    const dispatch = useDispatch();
-
     const [addCustomerInputs, addCustomerData, handleChange] = useForm(inputs);
 
+    const addCustomerMutation = useMutation(services.customer.addCustomer);
     const handleSubmit = (values) => {
-        dispatch(
-            customerMiddleware.addCustomer({
-                name: values.name,
-                email: values.email,
-                address: values.address,
-            })
-        ).then((res) => {
-            window.alert(`Success Create new Customer '${res.name}'`);
-            navigate(CUSTOMER_LIST_PATH);
+        const dto = {
+            name: values.name,
+            email: values.email,
+            address: values.address,
+        };
+
+        addCustomerMutation.mutate(dto, {
+            onSuccess: (res) => {
+                window.alert(`Success Create new Customer '${res.name}'`);
+                navigate(CUSTOMER_LIST_PATH);
+            }
         });
     };
 

@@ -1,10 +1,10 @@
 import {useNavigate, useParams} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
 import {CUSTOMER_LIST_PATH} from "../../../shared/constants/routes.js";
-import customerMiddleware from "../../../store/middlewares/customer.middleware.js";
 import {useForm} from "../../../shared/hooks/index.js";
 import {object, string} from "yup";
+import {useMutation, useQuery} from "react-query";
+import services from "../../../services/index.js";
 
 const inputs = [
     {
@@ -43,11 +43,12 @@ export default function useEditCustomerPage() {
 
     const navigate = useNavigate();
 
-    const dispatch = useDispatch();
-
-    const currentCustomer = useSelector(
-        (state) => state.customer.currentCustomer
+    const getCustomerQuery = useQuery(
+        ["get-customer", id],
+        () => services.customer.getCustomer(id),
+        {keepPreviousData: true}
     );
+    const currentCustomer = getCustomerQuery.data;
 
     const [formInputs, formData, _, refreshForm] = useForm(
         inputs,
@@ -55,13 +56,10 @@ export default function useEditCustomerPage() {
     );
 
     useEffect(() => {
-        if (!currentCustomer || currentCustomer.id !== Number(id)) {
-            dispatch(customerMiddleware.getCustomer(id));
-        } else {
-            refreshForm(currentCustomer)
-        }
-    }, [dispatch, id, currentCustomer]);
+        refreshForm(currentCustomer)
+    }, [currentCustomer]);
 
+    const updateCustomerMutation = useMutation(services.customer.updateCustomer);
     const handleSubmit = (values) => {
         const updatedCustomer = {
             ...currentCustomer,
@@ -70,11 +68,11 @@ export default function useEditCustomerPage() {
             address: values.address,
         };
 
-        dispatch(
-            customerMiddleware.updateCustomer(currentCustomer.id, updatedCustomer)
-        ).then((res) => {
-            window.alert(`Success Update Customer '${res.name}'`);
-            navigate(CUSTOMER_LIST_PATH);
+        updateCustomerMutation.mutate({id, updatedCustomer}, {
+            onSuccess: (res) => {
+                window.alert(`Success Update Customer '${res.name}'`);
+                navigate(CUSTOMER_LIST_PATH);
+            }
         });
     };
 

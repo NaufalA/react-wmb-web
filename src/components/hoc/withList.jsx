@@ -23,6 +23,7 @@ export default function withList(ListComponent, options) {
             onSettled: () => {
                 setSearchParams({page: page.toString(), size: size.toString()});
             },
+            refetchOnMount: true,
             keepPreviousData: true
         });
 

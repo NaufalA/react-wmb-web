@@ -7,7 +7,13 @@ import {Provider} from "react-redux";
 import store from "./store/store.js";
 import {QueryClient, QueryClientProvider} from "react-query";
 
-const client = new QueryClient();
+const client = new QueryClient({
+    defaultOptions: {
+        queries: {
+            refetchOnMount: false
+        }
+    }
+});
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

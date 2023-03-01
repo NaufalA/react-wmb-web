@@ -44,7 +44,7 @@ export default function customerService(http) {
         }
     };
 
-    const updateCustomer = async (id, updatedCustomer) => {
+    const updateCustomer = async ({id, updatedCustomer}) => {
         try {
             const res = await http.put(`${baseURI}/${id}`, updatedCustomer);
             return res.data.data;
